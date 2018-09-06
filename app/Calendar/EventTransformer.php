@@ -58,7 +58,7 @@ class EventTransformer
 
     public function studyActivities()
     {
-        if(is_array($this->studyActivities)) {
+        if (is_array($this->studyActivities)) {
             return implode(', ', $this->studyActivities);
         }
 
@@ -68,11 +68,11 @@ class EventTransformer
     public function activity()
     {
         //If the event is Study Assistance we should not display an activity type
-        if($this->studyActivities() == "Study Assistance") {
+        if ($this->studyActivities() == "Study Assistance") {
             return "";
         }
 
-        if(is_array($this->activity)) {
+        if (is_array($this->activity)) {
             return implode(', ', $this->activity);
         }
 
@@ -82,7 +82,7 @@ class EventTransformer
 
     public function lectors()
     {
-        if(is_array($this->lectors)) {
+        if (is_array($this->lectors)) {
             $lastItem = array_pop($this->lectors);
             $lectors = implode(', ', $this->lectors);
             $lectors .= ' & '.$lastItem;
@@ -96,7 +96,7 @@ class EventTransformer
     {
         $lectorPrefix = "Lektor: ";
 
-        if(@count($this->lectors) > 1) {
+        if (@count($this->lectors) > 1) {
             $lectorPrefix = "Lektorer: ";
         }
 
@@ -126,7 +126,7 @@ class EventTransformer
         $activity = $this->activity();
 
         //Only add the colon after the activity if there is an activity
-        if($activity != "") {
+        if ($activity != "") {
             $activity .= ": ";
         }
 
@@ -168,13 +168,13 @@ class EventTransformer
         $attributes = [];
 
         foreach($parts as $part) {
-            foreach($this->expressions as $type => $expression) {
+            foreach ($this->expressions as $type => $expression) {
                 $matches = [];
 
-                if(preg_match($expression, $part, $matches)) {
+                if (preg_match($expression, $part, $matches)) {
                     $parsedData = $this->formatMatchedData($type, $matches);
 
-                    if(!array_key_exists($type, $attributes)) {
+                    if (!array_key_exists($type, $attributes)) {
                         $attributes[$type] = [$parsedData];
                     }
                     else {
@@ -187,8 +187,8 @@ class EventTransformer
         /**
          * If there's only one element in an array we flatten it
          */
-        foreach($attributes as $type => $attribute) {
-            if(count($attribute) == 1) {
+        foreach ($attributes as $type => $attribute) {
+            if (count($attribute) == 1) {
                 $attributes[$type] = $attributes[$type][0];
             }
         }
@@ -201,8 +201,8 @@ class EventTransformer
             'course_type' => 'courseType'
         ];
 
-        foreach($map as $attribute => $prop) {
-            if(array_key_exists($attribute, $attributes)) {
+        foreach ($map as $attribute => $prop) {
+            if (array_key_exists($attribute, $attributes)) {
                 $this->$prop = $attributes[$attribute];
             }
         }
@@ -212,14 +212,15 @@ class EventTransformer
          * parse it seperately
          */
         $matches = [];
-        if(preg_match("/ID (.+)/", $this->event->description, $matches)) {
+        if (preg_match("/ID (.+)/", $this->event->description, $matches)) {
             $this->id = $matches[1];
         }
     }
 
     protected function formatMatchedData($type, $matches)
     {
-        switch($type) {
+        switch ($type)
+        {
             case "activity":
                 if($matches[1] == "Lecture") {
                     return "Forelæsning";

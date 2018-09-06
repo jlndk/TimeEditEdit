@@ -50,7 +50,8 @@ class Calendar implements Responsable
      * Create an ICS compatable string from this existing calendar.
      * @return string The ICS formatted calendar.
      */
-    public function render() : string {
+    public function render() : string
+    {
         $output = "BEGIN:VCALENDAR" . "\r\n";
         $output .= 'VERSION:2.0' . "\r\n";
         $output .= "METHOD:PUBLISH\r\n";
@@ -59,9 +60,11 @@ class Calendar implements Responsable
         $output .= "X-WR-CALNAME:" . $this->title . "\r\n";
         $output .= "X-WR-CALDESC:" . $this->description . "\r\n";
         $output .= "X-PUBLISHED-TTL:" . $this->published . "\r\n";
+
         foreach($this->events as $event) {
             $output .= $event->render();
         }
+        
         $output .= "END:VCALENDAR";
 
         return $output;
@@ -70,7 +73,8 @@ class Calendar implements Responsable
     /**
      * Alias for render
      */
-    public function export() : string {
+    public function export() : string
+    {
         return $this->render();
     }
 
@@ -127,7 +131,8 @@ class Calendar implements Responsable
     /**
      * Magic method for automatic string conversion
      */
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->render();
     }
 

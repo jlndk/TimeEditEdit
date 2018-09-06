@@ -70,7 +70,8 @@ class Event
         }
     }
 
-    public function render(): string {
+    public function render(): string
+    {
         Carbon::setToStringFormat('Ymd\THi0\Z');
 
         $output = "BEGIN:VEVENT\r\n";
@@ -89,7 +90,8 @@ class Event
         return $output;
     }
 
-    public function export(): string {
+    public function export(): string
+    {
         return $this->render();
     }
 
