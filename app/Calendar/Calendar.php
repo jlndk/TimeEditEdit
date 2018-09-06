@@ -7,114 +7,87 @@ use Illuminate\Contracts\Support\Responsable;
 class Calendar implements Responsable
 {
     /**
+     * The title of the entire calendar
+     *
      * @var string
      */
     public $title;
 
     /**
+     * The description for the entire calendar
+     *
      * @var string
      */
     public $description;
 
     /**
+     * PUBLISHED-TTL
+     *
      * @var string
      */
     public $published;
 
     /**
+     * The list of all events in the calendar
+     *
      * @var array
      */
     public $events = array();
 
     /**
-     * @var array
+     * Create a new Calendar. Optionally fill calendar with existing ICS data.
+     *
+     * @param string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
      */
-    protected $_eventsByDate;
-
     public function __construct($content = null)
     {
         if ($content) {
-            $isUrl  = strpos($content, 'http') === 0 && filter_var($content, FILTER_VALIDATE_URL);
-            $isFile = strpos($content, "\n") === false && file_exists($content);
-            if ($isUrl || $isFile) {
-                $content = file_get_contents($content);
-            }
-            $this->parse($content);
+            $this->constructCalendar($content);
         }
     }
 
-    public function title()
+    /**
+     * Create an ICS compatable string from this existing calendar.
+     * @return string The ICS formatted calendar.
+     */
+    public function render() : string
     {
-        return $this->title;
-    }
+        $output = "BEGIN:VCALENDAR" . "\r\n";
+        $output .= 'VERSION:2.0' . "\r\n";
+        $output .= "METHOD:PUBLISH\r\n";
+        $output .= "CALSCALE:GREGORIAN" . "\r\n";
+        $output .= "PRODID://TimeEditEdit@jlndk//\r\n";
+        $output .= "X-WR-CALNAME:" . $this->title . "\r\n";
+        $output .= "X-WR-CALDESC:" . $this->description . "\r\n";
+        $output .= "X-PUBLISHED-TTL:" . $this->published . "\r\n";
 
-    public function description()
-    {
-        return $this->description;
-    }
-
-    public function published()
-    {
-        return $this->published;
-    }
-
-    public function events()
-    {
-        return $this->events;
-    }
-
-    public function eventsByDate()
-    {
-        if (! $this->_eventsByDate) {
-            $this->_eventsByDate = array();
-            foreach ($this->events() as $event) {
-                foreach ($event->occurrences() as $occurrence) {
-                    $date = $occurrence->format('Y-m-d');
-                    $this->_eventsByDate[$date][] = $event;
-                }
-            }
-            ksort($this->_eventsByDate);
+        foreach($this->events as $event) {
+            $output .= $event->render();
         }
-        return $this->_eventsByDate;
+        
+        $output .= "END:VCALENDAR";
+
+        return $output;
     }
 
-    public function eventsByDateBetween($start, $end)
+    /**
+     * Alias for render
+     */
+    public function export() : string
     {
-        if ((string) (int) $start !== (string) $start) {
-            $start = strtotime($start);
-        }
-        $start = date('Y-m-d', $start);
-        if ((string) (int) $end !== (string) $end) {
-            $end = strtotime($end);
-        }
-        $end = date('Y-m-d', $end);
-        $return = array();
-        foreach ($this->eventsByDate() as $date => $events) {
-            if ($start <= $date && $date < $end) {
-                $return[$date] = $events;
-            }
-        }
-        return $return;
+        return $this->render();
     }
 
-    public function eventsByDateSince($start)
-    {
-        if ((string) (int) $start !== (string) $start) {
-            $start = strtotime($start);
-        }
-        $start = date('Y-m-d', $start);
-        $return = array();
-        foreach ($this->eventsByDate() as $date => $events) {
-            if ($start <= $date) {
-                $return[$date] = $events;
-            }
-        }
-        return $return;
-    }
-
-    public function parse($content)
+    /**
+     * Extract all information from an ICS formatted string
+     *
+     * @param  string  $content The actual content of an ICS file
+     * @return $this
+     */
+    protected function parse($content)
     {
         $content = str_replace("\r\n ", '', $content);
+
         // Title
         preg_match('`^X-WR-CALNAME:(.*)$`m', $content, $m);
         $this->title = $m ? trim($m[1]) : null;
@@ -136,33 +109,30 @@ class Calendar implements Responsable
         return $this;
     }
 
-    public function render():string {
-        $output = "BEGIN:VCALENDAR" . "\r\n";
-        $output .= 'VERSION:2.0' . "\r\n";
-        $output .= "METHOD:PUBLISH\r\n";
-        $output .= "CALSCALE:GREGORIAN" . "\r\n";
-        $output .= "PRODID://TimeEditEdit@jlndk//\r\n";
-        $output .= "X-WR-CALNAME:" . $this->title . "\r\n";
-        $output .= "X-WR-CALDESC:" . $this->description . "\r\n";
-        $output .= "X-PUBLISHED-TTL:" . $this->published . "\r\n";
-        foreach($this->events() as $event) {
-            $output .= $event->render();
-        }
-        $output .= "END:VCALENDAR";
-        return $output;
-    }
-
     /**
-     * Alias for render
+     * Fill the calendar with existing ICS data.
+     * @param  string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
+     * @return $this
      */
-    public function export():string {
-        return $this->render();
+    protected function constructCalendar($content)
+    {
+        $isUrl  = strpos($content, 'http') === 0 && filter_var($content, FILTER_VALIDATE_URL);
+        $isFile = strpos($content, "\n") === false && file_exists($content);
+
+        if ($isUrl || $isFile) {
+            $content = file_get_contents($content);
+        }
+
+        $this->parse($content);
+
+        return $this;
     }
 
     /**
      * Magic method for automatic string conversion
      */
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->render();
     }
 

@@ -32,11 +32,6 @@ class Event
     public $dateEnd;
 
     /**
-     * @var array
-     */
-    public $exdate = array();
-
-    /**
      * @var string
      */
     public $location;
@@ -59,32 +54,13 @@ class Event
     /**
      * @var string
      */
-    protected $timestamp;
+    public $timestamp;
 
     public function __construct($content = null)
     {
         if ($content) {
             $this->parse($content);
         }
-    }
-
-    public function summary()
-    {
-        return $this->summary;
-    }
-
-    public function title()
-    {
-        return $this->summary;
-    }
-
-    public function description()
-    {
-        return $this->description;
-    }
-
-    public function location() {
-        return $this->location;
     }
 
     public function duration()
@@ -94,19 +70,16 @@ class Event
         }
     }
 
-    public function timestamp() {
-        return $this->timestamp;
-    }
-
-    public function render(): string {
+    public function render(): string
+    {
         Carbon::setToStringFormat('Ymd\THi0\Z');
 
         $output = "BEGIN:VEVENT\r\n";
 
         $output .= "UID:". escape_comma($this->uid) ."\r\n";
-        $output .= "SUMMARY:". escape_comma($this->summary()) ."\r\n";
-        $output .= "DESCRIPTION:". escape_comma($this->description())."\r\n";
-        $output .= "LOCATION:" . escape_comma($this->location()) . "\r\n";
+        $output .= "SUMMARY:". escape_comma($this->summary) ."\r\n";
+        $output .= "DESCRIPTION:". escape_comma($this->description)."\r\n";
+        $output .= "LOCATION:" . escape_comma($this->location) . "\r\n";
 
         $output .= "DTSTART:".$this->dateStart."\r\n";
         $output .= "DTEND:".$this->dateEnd."\r\n";
@@ -117,7 +90,8 @@ class Event
         return $output;
     }
 
-    public function export(): string {
+    public function export(): string
+    {
         return $this->render();
     }
 
@@ -150,16 +124,6 @@ class Event
             $this->dateEnd = new Carbon($m[1]);
         }
 
-        // Exdate
-        if (preg_match_all('`^EXDATE(;.+)?:([0-9]+(T[0-9]+Z)?)`m', $content, $m)) {
-            foreach ($m[2] as $dates) {
-                $dates = explode(',', $dates);
-                foreach ($dates as $d) {
-                    $this->exdate[] = new Carbon($d);
-                }
-            }
-        }
-
         // Location
         if (preg_match('`^LOCATION:(.*)$`m', $content, $m)) {
             $this->location = trim($m[1]);
@@ -186,14 +150,5 @@ class Event
         }
 
         return $this;
-    }
-
-    protected function _isExdate($date)
-    {
-        if ((string) (int) $date != $date) {
-            $date = strtotime($date);
-        }
-        $date = date('Y-m-d', $date);
-        return in_array($date, $this->exdate);
     }
 }
