@@ -2,6 +2,6 @@
 
 if(!function_exists('escape_comma')) {
     function escape_comma($str) : string {
-        str_replace(",","\,",$str)
+        return str_replace(",","\,",$str);
     }
 }
