@@ -168,7 +168,13 @@ class Calendar implements Responsable
 
     public function toResponse($request)
     {
-        return response($this->render())
+        $response = response($this->render())
             ->header('Content-Type', 'text/calendar; charset=UTF-8');
+
+        if($request->has('plain')) {
+            $response->header('Content-Type', 'text/plain; charset=UTF-8');
+        }
+
+        return $response;
     }
 }
