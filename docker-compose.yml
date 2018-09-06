@@ -1,0 +1,8 @@
+version: '3'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: build/Dockerfile
+        ports:
+            - 1215:1215
