@@ -22,6 +22,11 @@ class EventTransformer
     protected $event;
 
     /**
+     * @var string
+     */
+    protected $id;
+
+    /**
      * @var string|array
      */
     protected $studyActivities;
@@ -41,10 +46,19 @@ class EventTransformer
      */
     protected $courseType;
 
+    /**
+     * @var string
+     */
+    protected $programme;
+
     public function __construct(Event $event) {
         $this->event = $event;
 
         $this->parse();
+    }
+
+    public function id() {
+        return $this->id;
     }
 
     public function studyActivities() {
@@ -101,17 +115,26 @@ class EventTransformer
         return $this->courseType;
     }
 
+    public function programme() {
+        return $this->programme;
+    }
+
     public function transform() {
 
         $activity = $this->activity();
 
+        //Only add the colon after the activity if there is an activity
         if($activity != "") {
             $activity .= ": ";
         }
 
         $this->event->summary = $activity . $this->studyActivities();
-        $this->event->description = $this->lectorPrefix() . $this->lectors();
-        //
+
+        $description = $this->lectorPrefix() . $this->lectors()."\\n";
+        $description .= "Programme: " . $this->programme()."\\n";
+        $description .= "TimeEdit ID: " . $this->id();
+        $this->event->description = $description;
+
         return $this->event;
     }
 
@@ -162,6 +185,15 @@ class EventTransformer
             if(array_key_exists($attribute, $attributes)) {
                 $this->$prop = $attributes[$attribute];
             }
+        }
+
+        /**
+         * Since id is in the description instead of the title, we need to
+         * parse it seperately
+         */
+        $matches = [];
+        if(preg_match("/ID (.+)/", $this->event->description, $matches)) {
+            $this->id = $matches[1];
         }
     }
 
