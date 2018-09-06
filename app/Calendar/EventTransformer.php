@@ -8,7 +8,7 @@ class EventTransformer
      * The list of regular expression for each segment of the given text.
      * @var array
      */
-    public $expressions = [
+    protected $expressions = [
         'study_activity' => '/Study Activity  : ([^\.]+)\.? ([^,]+)/',
         'lector' => '/Name: ([^,]+)/',
         'programme' => '/Programme: ([^,]+)/',
@@ -51,17 +51,13 @@ class EventTransformer
      */
     protected $programme;
 
-    public function __construct(Event $event) {
-        $this->event = $event;
-
-        $this->parse();
-    }
-
-    public function id() {
+    public function id()
+    {
         return $this->id;
     }
 
-    public function studyActivities() {
+    public function studyActivities()
+    {
         if(is_array($this->studyActivities)) {
             return implode(', ', $this->studyActivities);
         }
@@ -69,7 +65,8 @@ class EventTransformer
         return $this->studyActivities;
     }
 
-    public function activity() {
+    public function activity()
+    {
         //If the event is Study Assistance we should not display an activity type
         if($this->studyActivities() == "Study Assistance") {
             return "";
@@ -83,7 +80,8 @@ class EventTransformer
         return $this->activity;
     }
 
-    public function lectors() {
+    public function lectors()
+    {
         if(is_array($this->lectors)) {
             $lastItem = array_pop($this->lectors);
             $lectors = implode(', ', $this->lectors);
@@ -94,7 +92,8 @@ class EventTransformer
         return $this->lectors;
     }
 
-    public function lectorPrefix() {
+    public function lectorPrefix()
+    {
         $lectorPrefix = "Lektor: ";
 
         if(@count($this->lectors) > 1) {
@@ -107,20 +106,23 @@ class EventTransformer
     /**
      * Alias for lectors
      */
-    public function lector() {
+    public function lector()
+    {
         return $this->lectors();
     }
 
-    public function courseType() {
+    public function courseType()
+    {
         return $this->courseType;
     }
 
-    public function programme() {
+    public function programme()
+    {
         return $this->programme;
     }
 
-    public function transform() {
-
+    public function summary()
+    {
         $activity = $this->activity();
 
         //Only add the colon after the activity if there is an activity
@@ -128,17 +130,35 @@ class EventTransformer
             $activity .= ": ";
         }
 
-        $this->event->summary = $activity . $this->studyActivities();
+        return $activity . $this->studyActivities();
+    }
 
+    public function description()
+    {
         $description = $this->lectorPrefix() . $this->lectors()."\\n";
         $description .= "Programme: " . $this->programme()."\\n";
         $description .= "TimeEdit ID: " . $this->id();
-        $this->event->description = $description;
+
+        return $description;
+    }
+
+    public function __construct(Event $event)
+    {
+        $this->event = $event;
+
+        $this->parse();
+    }
+
+    public function transform()
+    {
+        $this->event->summary = $this->summary();
+        $this->event->description = $this->description();
 
         return $this->event;
     }
 
-    public function parse() {
+    protected function parse()
+    {
         //Fix inconsistencies in formatting
         $summary = str_replace("Study Activity,  :", "Study Activity  :", $this->event->summary);
 
