@@ -139,9 +139,9 @@ class Calendar implements Responsable
     public function render():string {
         $output = "BEGIN:VCALENDAR" . "\r\n";
         $output .= 'VERSION:2.0' . "\r\n";
-        $output .= "METHOD: PUBLISH\r\n";
+        $output .= "METHOD:PUBLISH\r\n";
         $output .= "CALSCALE:GREGORIAN" . "\r\n";
-        $output .= "PRODID: TimeEditEdit@jlndk\r\n";
+        $output .= "PRODID://TimeEditEdit@jlndk//\r\n";
         $output .= "X-WR-CALNAME:" . $this->title . "\r\n";
         $output .= "X-WR-CALDESC:" . $this->description . "\r\n";
         $output .= "X-PUBLISHED-TTL:" . $this->published . "\r\n";
