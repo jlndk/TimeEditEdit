@@ -103,10 +103,10 @@ class Event
 
         $output = "BEGIN:VEVENT\r\n";
 
-        $output .= "UID:". $this->uid ."\r\n";
-        $output .= "SUMMARY:". $this->summary() ."\r\n";
-        $output .= "DESCRIPTION:".$this->description()."\r\n";
-        $output .= "LOCATION:" . $this->location() . "\r\n";
+        $output .= "UID:". escape_comma($this->uid) ."\r\n";
+        $output .= "SUMMARY:". escape_comma($this->summary()) ."\r\n";
+        $output .= "DESCRIPTION:". escape_comma($this->description())."\r\n";
+        $output .= "LOCATION:" . escape_comma($this->location()) . "\r\n";
 
         $output .= "DTSTART:".$this->dateStart."\r\n";
         $output .= "DTEND:".$this->dateEnd."\r\n";
