@@ -191,7 +191,7 @@ class TimeEditParser
         return $this->flattenAttributes($attributes);
     }
 
-    protected flattenAttributes($attributes)
+    protected function flattenAttributes($attributes)
     {
         /**
          * If there's only one element in an array we flatten it
