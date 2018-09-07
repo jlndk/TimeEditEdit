@@ -6,3 +6,7 @@ services:
             dockerfile: build/Dockerfile
         ports:
             - 1215:1215
+    redis:
+        image: redis
+        ports:
+            - 6379:6379
