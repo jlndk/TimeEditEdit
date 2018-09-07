@@ -72,7 +72,7 @@ class Event
 
     public function render(): string
     {
-        Carbon::setToStringFormat('Ymd\THi0\Z');
+        Carbon::setToStringFormat('Ymd\THis\Z');
 
         $output = "BEGIN:VEVENT\r\n";
 
