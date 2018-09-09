@@ -41,10 +41,16 @@ class EventTransformer
         return $description;
     }
 
+    public function location()
+    {
+        return $this->info->roomPrefix() . $this->info->rooms();
+    }
+
     public function transform()
     {
         $this->event->summary = $this->summary();
         $this->event->description = $this->description();
+        $this->event->location = $this->location();
 
         return $this->event;
     }

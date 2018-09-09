@@ -207,4 +207,46 @@ class TimeEditParserTest extends TestCase
 
         $this->assertEquals($parser->activity(), 'Exercises');
     }
+
+    /**
+     * A description for this test
+     *
+     * @test
+     * @return void
+     */
+    public function itCanParseOtherFields()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:Activity: Lecture\n".
+                    "LOCATION:Room: Aud 1 (0A11)\n".
+                    "DESCRIPTION:ID 39280\n".
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals($parser->id(), '39280');
+        $this->assertEquals($parser->rooms(), 'Aud 1 (0A11)');
+    }
+
+    /**
+     * A description for this test
+     *
+     * @test
+     * @return void
+     */
+    public function itCanParseMultipleRooms()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:Activity: Lecture\n".
+                    "LOCATION:Room: 2A52\, Room: 2A54\, Room: 3A18\, Room: 3A52\n".
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals($parser->rooms(), '2A52, 2A54, 3A18 & 3A52');
+    }
 }

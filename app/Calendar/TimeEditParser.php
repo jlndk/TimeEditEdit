@@ -54,6 +54,11 @@ class TimeEditParser
     protected $lectors;
 
     /**
+     * @var string|array
+     */
+    protected $rooms;
+
+    /**
      * @var string
      */
     protected $courseType;
@@ -100,6 +105,14 @@ class TimeEditParser
         return $this->lectors;
     }
 
+    /**
+     * Alias for lectors
+     */
+    public function lector()
+    {
+        return $this->lectors();
+    }
+
     public function lectorPrefix()
     {
         $lectorPrefix = "Lektor: ";
@@ -111,12 +124,32 @@ class TimeEditParser
         return $lectorPrefix;
     }
 
-    /**
-     * Alias for lectors
-     */
-    public function lector()
+    public function rooms()
     {
-        return $this->lectors();
+        if (is_array($this->rooms)) {
+            return natural_implode_unique($this->rooms);
+        }
+
+        return $this->rooms;
+    }
+
+    /**
+     * Alias for rooms
+     */
+    public function room()
+    {
+        return $this->rooms();
+    }
+
+    public function roomPrefix()
+    {
+        $roomPrefix = "Room: ";
+
+        if (@count($this->rooms) > 1) {
+            $roomPrefix = "Rooms: ";
+        }
+
+        return $roomPrefix;
     }
 
     public function courseType()
@@ -153,13 +186,17 @@ class TimeEditParser
             }
         }
 
-        /**
-         * Since id is in the description instead of the title, we need to
-         * parse it seperately
-         */
+        //Handle ID seperately (since it's in the description field)
         $matches = [];
         if (preg_match("/ID (.+)/", $this->event->description, $matches)) {
             $this->id = $matches[1];
+        }
+
+        //Handle rooms seperately (since it's in the location field)
+        $matches = [];
+        if (preg_match_all("/Room: ([^,\\\]+)/", $this->event->location, $matches)) {
+            array_shift($matches);
+            $this->rooms = $matches[0];
         }
     }
 
