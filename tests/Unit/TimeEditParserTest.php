@@ -227,6 +227,7 @@ class TimeEditParserTest extends TestCase
         $parser = new TimeEditParser($event);
 
         $this->assertEquals($parser->id(), '39280');
+        $this->assertEquals($parser->roomPrefix(), 'Room: ');
         $this->assertEquals($parser->rooms(), 'Aud 1 (0A11)');
     }
 
@@ -247,6 +248,7 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
+        $this->assertEquals($parser->roomPrefix(), 'Rooms: ');
         $this->assertEquals($parser->rooms(), '2A52, 2A54, 3A18 & 3A52');
     }
 }
