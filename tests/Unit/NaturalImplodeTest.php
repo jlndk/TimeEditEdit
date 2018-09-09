@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class HelpersTest extends TestCase
+class NaturalImplodeTest extends TestCase
 {
     /**
      * Check if the natural_implode helper function actually concatenates
@@ -66,5 +66,27 @@ class HelpersTest extends TestCase
     public function natualImplodeShouldReturnNothingIfAnEmptyArrayIsSupplied()
     {
         $this->assertEquals('', natural_implode([]));
+    }
+
+    /**
+     * Check if the natural_implode_unique function actually removes dublicates
+     * from an array before concatenating it.
+     *
+     * @test
+     * @return void
+     */
+    public function naturalImplodeUniqueDoesNotHaveDublicates()
+    {
+        $arr = [
+            'foo', 'bar', 'foo', 'bar'
+        ];
+
+        $this->assertEquals('foo & bar', natural_implode_unique($arr));
+
+        $arr = [
+            'foo', 'foo', 'bar', 'bar'
+        ];
+
+        $this->assertEquals('foo & bar', natural_implode_unique($arr));
     }
 }

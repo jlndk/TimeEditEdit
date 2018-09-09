@@ -71,7 +71,7 @@ class TimeEditParser
     public function studyActivities()
     {
         if (is_array($this->studyActivities)) {
-            return natural_implode($this->studyActivities);
+            return natural_implode_unique($this->studyActivities);
         }
 
         return $this->studyActivities;
@@ -85,7 +85,7 @@ class TimeEditParser
         }
 
         if (is_array($this->activity)) {
-            return natural_implode($this->activity);
+            return natural_implode_unique($this->activity);
         }
 
         return $this->activity;
@@ -94,7 +94,7 @@ class TimeEditParser
     public function lectors()
     {
         if (is_array($this->lectors)) {
-            return natural_implode($this->lectors);
+            return natural_implode_unique($this->lectors);
         }
 
         return $this->lectors;

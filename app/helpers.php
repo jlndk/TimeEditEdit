@@ -18,3 +18,10 @@ if (!function_exists('natural_implode')) {
         return implode(', ', $arr) . ' & ' . $lastItem;
     }
 }
+
+if (!function_exists('natural_implode_unique')) {
+    function natural_implode_unique(array $arr) : string
+    {
+        return natural_implode(array_unique($arr));
+    }
+}
