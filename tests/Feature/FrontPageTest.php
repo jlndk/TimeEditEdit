@@ -13,7 +13,7 @@ class FrontPageTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_load_front_page()
+    public function itCanLoadFrontPage()
     {
         $this->withExceptionHandling();
 

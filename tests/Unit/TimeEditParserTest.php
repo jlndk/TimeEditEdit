@@ -16,10 +16,17 @@ class TimeEditParserTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_parse_a_normal_summary()
+    public function itCanParseANormalSummary()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, Name: Claus Brabrand\, Name: Dan Witzner Hansen\, Name: Signe Kyster\, Programme: SWU 1st year\, Course type: Mandatory\,  Activity: Lecture\n".
+                    "SUMMARY:".
+                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
+                    "Name: Claus Brabrand\, ".
+                    "Name: Dan Witzner Hansen\, ".
+                    "Name: Signe Kyster\, ".
+                    "Programme: SWU 1st year\, ".
+                    "Course type: Mandatory\,  ".
+                    "Activity: Lecture\n".
                     "END:VEVENT";
 
         $event = new Event($rawData);
@@ -40,10 +47,13 @@ class TimeEditParserTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_parse_a_study_assistance_summery()
+    public function itCanParseAStudyAssitanceSummary()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Study Assistance\, Name: Dan Witzner Hansen\, Programme: SWU 1st year\n".
+                    "SUMMARY:".
+                    "Study Activity\,  : Study Assistance\, ".
+                    "Name: Dan Witzner Hansen\, ".
+                    "Programme: SWU 1st year\n".
                     "END:VEVENT";
 
         $event = new Event($rawData);
@@ -62,10 +72,13 @@ class TimeEditParserTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_handle_one_lector()
+    public function itCanHandleOneLector()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, Name: Claus Brabrand\, Programme: SWU 1st year\n".
+                    "SUMMARY:".
+                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
+                    "Name: Claus Brabrand\, ".
+                    "Programme: SWU 1st year\n".
                     "END:VEVENT";
 
         $event = new Event($rawData);
@@ -82,10 +95,15 @@ class TimeEditParserTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_handle_multiple_lectors()
+    public function itCanHandleMultipleLectors()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, Name: Claus Brabrand\, Name: Dan Witzner Hansen\, Name: Signe Kyster\, Programme: SWU 1st year\n".
+                    "SUMMARY:".
+                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
+                    "Name: Claus Brabrand\, ".
+                    "Name: Dan Witzner Hansen\, ".
+                    "Name: Signe Kyster\, ".
+                    "Programme: SWU 1st year\n".
                     "END:VEVENT";
 
         $event = new Event($rawData);
@@ -102,17 +120,22 @@ class TimeEditParserTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_handle_multiple_study_activities()
+    public function itCanHandleMultipleStudyActivities()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, Study Activity\,  : Projektarbejde og kommunikation. 1407003U-2\, Name: Henriette Moos\n".
+                    "SUMMARY:".
+                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
+                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-2\, ".
+                    "Name: Henriette Moos\n".
                     "END:VEVENT";
 
         $event = new Event($rawData);
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->studyActivities(), 'Projektarbejde og kommunikation, Projektarbejde og kommunikation');
+        $expectedActivities = 'Projektarbejde og kommunikation, Projektarbejde og kommunikation';
+
+        $this->assertEquals($parser->studyActivities(), $expectedActivities);
     }
 
     /**
@@ -121,10 +144,14 @@ class TimeEditParserTest extends TestCase
      * @test
      * @return void
      */
-    public function it_can_handle_multiple_activity_types()
+    public function itCanHandleMultipleActivityTypes()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, Name: Henriette Moos\, Activity: Exercises\,  Activity: Lecture\n".
+                    "SUMMARY:".
+                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
+                    "Name: Henriette Moos\, ".
+                    "Activity: Exercises\,  ".
+                    "Activity: Lecture\n".
                     "END:VEVENT";
 
         $event = new Event($rawData);

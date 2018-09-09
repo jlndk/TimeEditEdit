@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
-    function show($calid, Request $request) {
+    public function show($calid, Request $request)
+    {
         $cachedCalendar = Cache::get($calid);
 
         /**
@@ -19,13 +20,13 @@ class CalendarController extends Controller
          * development mode we return that instead of fetching it from TimeEdit.
          *
          */
-        if($cachedCalendar && !App::environment('local')) {
+        if ($cachedCalendar && !App::environment('local')) {
             return $cachedCalendar;
         }
 
         $calendar = new Calendar("https://cloud.timeedit.net/itu/web/public/$calid.ics");
 
-        foreach($calendar->events as $i => $event) {
+        foreach ($calendar->events as $i => $event) {
             $et = new EventTransformer($event);
             $calendar->events[$i] = $et->transform();
         }

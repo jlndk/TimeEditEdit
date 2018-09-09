@@ -61,10 +61,10 @@ class Calendar implements Responsable
         $output .= "X-WR-CALDESC:" . $this->description . "\r\n";
         $output .= "X-PUBLISHED-TTL:" . $this->published . "\r\n";
 
-        foreach($this->events as $event) {
+        foreach ($this->events as $event) {
             $output .= $event->render();
         }
-        
+
         $output .= "END:VCALENDAR";
 
         return $output;
@@ -141,7 +141,7 @@ class Calendar implements Responsable
         $response = response($this->render())
             ->header('Content-Type', 'text/calendar; charset=UTF-8');
 
-        if($request->has('plain')) {
+        if ($request->has('plain')) {
             $response->header('Content-Type', 'text/plain; charset=UTF-8');
         }
 

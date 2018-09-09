@@ -16,7 +16,7 @@ class EventTest extends TestCase
      * @test
      * @return void
      */
-    public function an_event_can_be_created_without_data()
+    public function anEventCanBeCreatedWithoutData()
     {
         $event = new Event();
 
@@ -38,7 +38,7 @@ class EventTest extends TestCase
      * @test
      * @return void
      */
-    public function an_event_can_be_created_with_data()
+    public function anEventCanBeCreatedWithData()
     {
         $rawData =  "BEGIN:VEVENT\n" .
                     "DTSTART:20180904T080000Z\n" .
@@ -58,7 +58,7 @@ class EventTest extends TestCase
         $this->assertEquals($event->summary, 'Study Activity: Grundlæggende Programmering, Name: Claus Brabrand');
         $this->assertEquals($event->description, 'ID 39280');
         $this->assertEquals((string)$event->dateStart, "2018-09-04 08:00:00");
-        $this->assertEquals((string)$event->dateEnd,   "2018-09-04 11:00:00");
+        $this->assertEquals((string)$event->dateEnd, "2018-09-04 11:00:00");
         $this->assertEquals($event->location, 'Room: Aud 1 (0A11)');
         $this->assertEquals($event->status, 'CONFIRMED');
         $this->assertEquals($event->updated, '20180907T200950Z');

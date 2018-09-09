@@ -173,15 +173,14 @@ class TimeEditParser
 
         $attributes = [];
 
-        foreach($parts as $part) {
+        foreach ($parts as $part) {
             foreach ($this->expressions as $type => $expression) {
                 if (preg_match($expression, $part, $matches)) {
                     $parsedData = $this->formatMatchedData($type, $matches);
 
                     if (!array_key_exists($type, $attributes)) {
                         $attributes[$type] = [$parsedData];
-                    }
-                    else {
+                    } else {
                         $attributes[$type][] = $parsedData;
                     }
                 }
@@ -207,17 +206,16 @@ class TimeEditParser
 
     protected function formatMatchedData($type, $matches)
     {
-        switch ($type)
-        {
+        switch ($type) {
             case "activity":
-                if($matches[1] == "Lecture") {
+                if ($matches[1] == "Lecture") {
                     return "Forelæsning";
                 }
 
                 return $matches[1];
             case "study_activity":
                 //Handle inconsistencies
-                if($matches[1] == "Study" && $matches[2] == "Assistance") {
+                if ($matches[1] == "Study" && $matches[2] == "Assistance") {
                     return "Study Assistance";
                 }
 
