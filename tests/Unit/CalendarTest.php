@@ -15,7 +15,7 @@ class CalendarTest extends TestCase
      * @test
      * @return void
      */
-    public function a_calendar_can_be_created_without_data()
+    public function aCalendarCanBeCreatedWithoutData()
     {
         $calendar = new Calendar();
 
@@ -31,7 +31,7 @@ class CalendarTest extends TestCase
      * @test
      * @return void
      */
-    public function a_calendar_can_be_created_with_metadata_but_no_events()
+    public function aCalendarCanBeCreatedWithMetadataButNoEvents()
     {
         $rawData =  "BEGIN:VCALENDAR\n".
                     "VERSION:2.0\n".
@@ -57,7 +57,7 @@ class CalendarTest extends TestCase
      * @test
      * @return void
      */
-    public function a_calendar_can_be_created_with_event_data()
+    public function aCalendarCanBeCreatedWithEventData()
     {
         $rawData =  "BEGIN:VCALENDAR\n".
                     "X-WR-CALNAME:Calendar Name\n".
