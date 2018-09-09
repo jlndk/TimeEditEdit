@@ -34,9 +34,9 @@ class TimeEditParserTest extends TestCase
         $parser = new TimeEditParser($event);
 
         $this->assertEquals($parser->studyActivities(), 'Grundlæggende programmering');
-        $this->assertEquals($parser->activity(), 'Forelæsning');
+        $this->assertEquals($parser->activity(), __('calendar.activity.lecture'));
         $this->assertEquals($parser->lectors(), 'Claus Brabrand, Dan Witzner Hansen & Signe Kyster');
-        $this->assertEquals($parser->lectorPrefix(), 'Lektorer: ');
+        $this->assertEquals($parser->lectorPrefix(), trans_choice('calendar.lectors', 3));
         $this->assertEquals($parser->courseType(), 'Mandatory');
         $this->assertEquals($parser->programme(), 'SWU 1st year');
     }
@@ -62,7 +62,7 @@ class TimeEditParserTest extends TestCase
 
         $this->assertEquals($parser->studyActivities(), 'Study Assistance');
         $this->assertEquals($parser->lectors(), 'Dan Witzner Hansen');
-        $this->assertEquals($parser->lectorPrefix(), 'Lektor: ');
+        $this->assertEquals($parser->lectorPrefix(), trans_choice('calendar.lectors', 1));
         $this->assertEquals($parser->programme(), 'SWU 1st year');
     }
 
@@ -86,7 +86,7 @@ class TimeEditParserTest extends TestCase
         $parser = new TimeEditParser($event);
 
         $this->assertEquals($parser->lectors(), 'Claus Brabrand');
-        $this->assertEquals($parser->lectorPrefix(), 'Lektor: ');
+        $this->assertEquals($parser->lectorPrefix(), trans_choice('calendar.lectors', 1));
     }
 
     /**
@@ -111,7 +111,7 @@ class TimeEditParserTest extends TestCase
         $parser = new TimeEditParser($event);
 
         $this->assertEquals($parser->lectors(), 'Claus Brabrand, Dan Witzner Hansen & Signe Kyster');
-        $this->assertEquals($parser->lectorPrefix(), 'Lektorer: ');
+        $this->assertEquals($parser->lectorPrefix(), trans_choice('calendar.lectors', 2));
     }
 
     /**
@@ -182,7 +182,9 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->activity(), 'Exercises & Forelæsning');
+        $expectedActivities =  __('calendar.activity.exercises') . ' & ' . __('calendar.activity.lecture');
+
+        $this->assertEquals($parser->activity(), $expectedActivities);
     }
 
     /**
@@ -205,7 +207,7 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->activity(), 'Exercises');
+        $this->assertEquals($parser->activity(), __('calendar.activity.exercises'));
     }
 
     /**
@@ -227,7 +229,7 @@ class TimeEditParserTest extends TestCase
         $parser = new TimeEditParser($event);
 
         $this->assertEquals($parser->id(), '39280');
-        $this->assertEquals($parser->roomPrefix(), 'Room: ');
+        $this->assertEquals($parser->roomPrefix(), trans_choice('calendar.rooms', 1));
         $this->assertEquals($parser->rooms(), 'Aud 1 (0A11)');
     }
 
@@ -248,7 +250,7 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->roomPrefix(), 'Rooms: ');
+        $this->assertEquals($parser->roomPrefix(), trans_choice('calendar.rooms', 2));
         $this->assertEquals($parser->rooms(), '2A52, 2A54, 3A18 & 3A52');
     }
 }

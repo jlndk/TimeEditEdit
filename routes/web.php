@@ -11,4 +11,4 @@
 |
 */
 
-Route::get('/{calid}', 'CalendarController@show');
+// Route::get('/', 'FrontPageController@index');

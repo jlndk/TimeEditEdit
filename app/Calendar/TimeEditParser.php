@@ -84,16 +84,17 @@ class TimeEditParser
 
     public function activity()
     {
-        //If the event is Study Assistance we should not display an activity type
-        if ($this->studyActivities() == "Study Assistance") {
-            return "";
-        }
-
         if (is_array($this->activity)) {
-            return natural_implode_unique($this->activity);
+            $translatedActivities = $this->activity;
+
+            foreach ($translatedActivities as $i => $activity) {
+                $translatedActivities[$i] = __('calendar.activity.'.$activity);
+            }
+
+            return natural_implode_unique($translatedActivities);
         }
 
-        return $this->activity;
+        return __('calendar.activity.'.$this->activity);
     }
 
     public function lectors()
@@ -115,13 +116,7 @@ class TimeEditParser
 
     public function lectorPrefix()
     {
-        $lectorPrefix = "Lektor: ";
-
-        if (@count($this->lectors) > 1) {
-            $lectorPrefix = "Lektorer: ";
-        }
-
-        return $lectorPrefix;
+        return trans_choice('calendar.lectors', @count($this->lectors));
     }
 
     public function rooms()
@@ -143,13 +138,7 @@ class TimeEditParser
 
     public function roomPrefix()
     {
-        $roomPrefix = "Room: ";
-
-        if (@count($this->rooms) > 1) {
-            $roomPrefix = "Rooms: ";
-        }
-
-        return $roomPrefix;
+        return trans_choice('calendar.rooms', @count($this->rooms));
     }
 
     public function courseType()
@@ -242,11 +231,7 @@ class TimeEditParser
     {
         switch ($type) {
             case "activity":
-                if ($matches[1] == "Lecture") {
-                    return "Forelæsning";
-                }
-
-                return $matches[1];
+                return strtolower($matches[1]);
             case "study_activity":
                 //Handle inconsistencies
                 if ($matches[1] == "Study" && $matches[2] == "Assistance") {

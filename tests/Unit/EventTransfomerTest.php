@@ -34,11 +34,12 @@ class EventTransfomerTest extends TestCase
         $orgEvent = new Event($rawData);
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
-        $expectedDescription = 'Lektor: Claus Brabrand\nProgramme: SWU 1st year\nTimeEdit ID: 39280';
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Claus Brabrand\n'.
+                                __('calendar.programme') . ': SWU 1st year\nTimeEdit ID: 39280';
 
-        $this->assertEquals($transformer->summary(), 'Forelæsning: Grundlæggende programmering');
-        $this->assertEquals($transformer->description(), $expectedDescription);
-        $this->assertEquals($transformer->location(), 'Room: Aud 1 (0A11)');
+        $this->assertEquals(__('calendar.activity.lecture') . ': Grundlæggende programmering', $transformer->summary());
+        $this->assertEquals($expectedDescription, $transformer->description());
+        $this->assertEquals(trans_choice('calendar.rooms', 1) . ': Aud 1 (0A11)', $transformer->location());
     }
 
     /**
@@ -61,10 +62,12 @@ class EventTransfomerTest extends TestCase
         $orgEvent = new Event($rawData);
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
-        $expectedDescription = 'Lektor: Dan Witzner Hansen\nProgramme: SWU 1st year\nTimeEdit ID: 43107';
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Dan Witzner Hansen\n'.
+                                __('calendar.programme') . ': SWU 1st year\n'.
+                                __('calendar.timeedit_id') . ': 43107';
 
-        $this->assertEquals($transformer->summary(), 'Study Assistance');
-        $this->assertEquals($transformer->description(), $expectedDescription);
-        $this->assertEquals($transformer->location(), 'Room: 3A50');
+        $this->assertEquals('Study Assistance', $transformer->summary());
+        $this->assertEquals($expectedDescription, $transformer->description());
+        $this->assertEquals(trans_choice('calendar.rooms', 1) . ': 3A50', $transformer->location());
     }
 }
