@@ -71,7 +71,7 @@ class TimeEditParser
     public function studyActivities()
     {
         if (is_array($this->studyActivities)) {
-            return implode(', ', $this->studyActivities);
+            return natural_implode($this->studyActivities);
         }
 
         return $this->studyActivities;
@@ -85,7 +85,7 @@ class TimeEditParser
         }
 
         if (is_array($this->activity)) {
-            return implode(', ', $this->activity);
+            return natural_implode($this->activity);
         }
 
         return $this->activity;

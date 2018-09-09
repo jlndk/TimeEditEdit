@@ -133,7 +133,7 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $expectedActivities = 'Projektarbejde og kommunikation, Projektarbejde og kommunikation';
+        $expectedActivities = 'Projektarbejde og kommunikation & Projektarbejde og kommunikation';
 
         $this->assertEquals($parser->studyActivities(), $expectedActivities);
     }
@@ -158,6 +158,6 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->activity(), 'Exercises, Forelæsning');
+        $this->assertEquals($parser->activity(), 'Exercises & Forelæsning');
     }
 }
