@@ -94,10 +94,7 @@ class TimeEditParser
     public function lectors()
     {
         if (is_array($this->lectors)) {
-            $lastItem = array_pop($this->lectors);
-            $lectors = implode(', ', $this->lectors);
-            $lectors .= ' & '.$lastItem;
-            return $lectors;
+            return natural_implode($this->lectors);
         }
 
         return $this->lectors;

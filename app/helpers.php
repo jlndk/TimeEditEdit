@@ -6,3 +6,15 @@ if (!function_exists('escape_comma')) {
         return str_replace(",", "\,", $str);
     }
 }
+
+if (!function_exists('natural_implode')) {
+    function natural_implode(array $arr) : string
+    {
+        if (count($arr) <= 1) {
+            return implode(', ', $arr);
+        }
+
+        $lastItem = array_pop($arr);
+        return implode(', ', $arr) . ' & ' . $lastItem;
+    }
+}
