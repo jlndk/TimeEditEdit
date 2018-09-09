@@ -10,10 +10,14 @@ cache:
     - vendor
     - $HOME/.composer/cache
 
-before_script:
+before_install:
     #Disable xdebug to reduce build times drasticly
     - phpenv config-rm xdebug.ini
+
+install:
     - composer install --dev --prefer-source --no-interaction
+
+before_script:
     - cp .env.travis .env
     - php artisan key:generate
 
