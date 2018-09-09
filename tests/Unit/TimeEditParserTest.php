@@ -125,6 +125,30 @@ class TimeEditParserTest extends TestCase
         $rawData =  "BEGIN:VEVENT\n" .
                     "SUMMARY:".
                     "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
+                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
+                    "Name: Henriette Moos\n".
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $expectedActivities = 'Projektarbejde og kommunikation & Grundlæggende programmering';
+
+        $this->assertEquals($parser->studyActivities(), $expectedActivities);
+    }
+
+    /**
+     * A description for this test
+     *
+     * @test
+     * @return void
+     */
+    public function itCanHandleDublicateStudyActivities()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:".
+                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
                     "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-2\, ".
                     "Name: Henriette Moos\n".
                     "END:VEVENT";
@@ -133,7 +157,7 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $expectedActivities = 'Projektarbejde og kommunikation, Projektarbejde og kommunikation';
+        $expectedActivities = 'Projektarbejde og kommunikation';
 
         $this->assertEquals($parser->studyActivities(), $expectedActivities);
     }
@@ -158,6 +182,29 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->activity(), 'Exercises, Forelæsning');
+        $this->assertEquals($parser->activity(), 'Exercises & Forelæsning');
+    }
+
+    /**
+     * A description for this test
+     *
+     * @test
+     * @return void
+     */
+    public function itCanHandleDublicateActivityTypes()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:".
+                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
+                    "Name: Henriette Moos\, ".
+                    "Activity: Exercises\,  ".
+                    "Activity: Exercises\n".
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals($parser->activity(), 'Exercises');
     }
 }

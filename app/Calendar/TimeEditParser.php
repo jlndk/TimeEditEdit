@@ -71,7 +71,7 @@ class TimeEditParser
     public function studyActivities()
     {
         if (is_array($this->studyActivities)) {
-            return implode(', ', $this->studyActivities);
+            return natural_implode_unique($this->studyActivities);
         }
 
         return $this->studyActivities;
@@ -85,7 +85,7 @@ class TimeEditParser
         }
 
         if (is_array($this->activity)) {
-            return implode(', ', $this->activity);
+            return natural_implode_unique($this->activity);
         }
 
         return $this->activity;
@@ -94,10 +94,7 @@ class TimeEditParser
     public function lectors()
     {
         if (is_array($this->lectors)) {
-            $lastItem = array_pop($this->lectors);
-            $lectors = implode(', ', $this->lectors);
-            $lectors .= ' & '.$lastItem;
-            return $lectors;
+            return natural_implode_unique($this->lectors);
         }
 
         return $this->lectors;
