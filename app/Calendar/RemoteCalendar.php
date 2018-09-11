@@ -4,7 +4,7 @@ namespace App\Calendar;
 
 use \GuzzleHttp\Client;
 
-class RemoteCalendar
+class RemoteCalendar implements \Serializable
 {
     protected $url;
 
@@ -43,5 +43,18 @@ class RemoteCalendar
         }
 
         return $res->getBody();
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            'url' => $this->url
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+        $this->url = $data['url'];
     }
 }
