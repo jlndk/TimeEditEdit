@@ -27,7 +27,7 @@ class EventTransformer
         //If the event is Study Assistance we should not display an activity type
         if ($this->info->studyActivities() == "Study Assistance") {
             $activity = "";
-        } elseif ($activity != "") {
+        } else if ($activity != "") {
             //Only add the colon after the activity if there is an activity
             $activity .= ": ";
         }

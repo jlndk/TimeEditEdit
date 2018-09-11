@@ -23,4 +23,4 @@ before_script:
 
 script:
     - ./vendor/bin/phpunit
-    - ./vendor/bin/phpcs app tests --standard=PSR2
+    - ./vendor/bin/phpcs app tests --standard=ruleset.xml
