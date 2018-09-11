@@ -45,14 +45,14 @@ class RemoteCalendar implements \Serializable
         return $res->getBody();
     }
 
-    public function serialize ()
+    public function serialize()
     {
         return serialize([
             'url' => $this->url
         ]);
     }
 
-    public function unserialize ($serialized)
+    public function unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->url = $data['url'];
