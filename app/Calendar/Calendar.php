@@ -35,14 +35,21 @@ class Calendar implements Responsable
     public $events = array();
 
     /**
+     * @var \App\Calendar\RemoteCalendar
+     */
+    protected $remoteCalendar;
+
+    /**
      * Create a new Calendar. Optionally fill calendar with existing ICS data.
      *
      * @param string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
      */
-    public function __construct($content = null)
+    public function __construct($content = null, RemoteCalendar $remoteCalendar)
     {
+        $this->remoteCalendar = $remoteCalendar;
+
         if ($content) {
-            $this->constructCalendar($content);
+            $this->create($content);
         }
     }
 
@@ -114,13 +121,15 @@ class Calendar implements Responsable
      * @param  string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
      * @return $this
      */
-    protected function constructCalendar($content)
+    public function create($content)
     {
         $isUrl  = strpos($content, 'http') === 0 && filter_var($content, FILTER_VALIDATE_URL);
         $isFile = strpos($content, "\n") === false && file_exists($content);
 
-        if ($isUrl || $isFile) {
+        if ($isFile) {
             $content = file_get_contents($content);
+        } else if ($isUrl) {
+            $content = $this->remoteCalendar->setUrl($content)->fetch();
         }
 
         $this->parse($content);

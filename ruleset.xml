@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="CustomCfg">
+	<description>
+		PSR-2 TimeEditEdit version
+	</description>
+
+	<rule ref="PSR2">
+        <!-- parameters with default values does not have to be at the end -->
+        <exclude name="PEAR.Functions.ValidDefaultValue"/>
+        <!-- both else if and elseif are valid -->
+        <exclude name="PSR2.ControlStructures.ElseIfDeclaration"/>
+	</rule>
+</ruleset>

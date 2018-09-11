@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
+    protected $calendar;
+
+    public function __construct(Calendar $calendar)
+    {
+        $this->calendar = $calendar;
+    }
+
     public function show($calid, Request $request)
     {
         //Try to fetch the calendar with this id from the cache
@@ -18,10 +25,10 @@ class CalendarController extends Controller
 
         /**
          * If don't have a cached version of the calendar or we're in
-         * we fetch the calendar from TimeEdit
+         * development mode we fetch the calendar from TimeEdit
          */
         if (!$calendar || App::environment('local')) {
-            $calendar = new Calendar("https://cloud.timeedit.net/itu/web/public/$calid.ics");
+            $calendar = $this->calendar->create("https://cloud.timeedit.net/itu/web/public/$calid.ics");
             //After we fetch the calendar we put it into the cache for future requests
             Cache::put($calid, $calendar, 5);
         }

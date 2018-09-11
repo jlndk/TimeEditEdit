@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use \App;
 use App\Calendar\Calendar;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,7 +18,7 @@ class CalendarTest extends TestCase
      */
     public function aCalendarCanBeCreatedWithoutData()
     {
-        $calendar = new Calendar();
+        $calendar = App::make(Calendar::class);
 
         $this->assertEquals($calendar->title, null);
         $this->assertEquals($calendar->description, null);
@@ -43,7 +44,8 @@ class CalendarTest extends TestCase
                     "PRODID:-//TimeEdit\\\, //TimeEdit//EN\n".
                     "END:VCALENDAR";
 
-        $calendar = new Calendar($rawData);
+        $calendar = App::make(Calendar::class);
+        $calendar->create($rawData);
 
         $this->assertEquals($calendar->title, 'TimeEdit-SWU 1st year-20180901');
         $this->assertEquals($calendar->description, 'Date limit 2018-08-20 - 2023-09-10');
@@ -69,7 +71,8 @@ class CalendarTest extends TestCase
                     "END:VEVENT".
                     "END:VCALENDAR";
 
-        $calendar = new Calendar($rawData);
+        $calendar = App::make(Calendar::class);
+        $calendar->create($rawData);
 
         $this->assertEquals($calendar->title, 'Calendar Name');
         $this->assertEquals($calendar->description, 'A calendar description');
