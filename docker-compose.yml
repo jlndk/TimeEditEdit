@@ -6,7 +6,7 @@ version: '3'
 
 services:
     traefik:
-        image: traefik:1.5.4
+        image: traefik:1.6
         ports:
             - 80:80
             - 8080:8080
@@ -29,9 +29,9 @@ services:
         labels:
             - "traefik.docker.network=web"
             - "traefik.enable=true"
-            - "traefik.basic.frontend.rule=PathPrefix: /"
-            - "traefik.basic.port=80"
-            - "traefik.basic.protocol=http"
+            - "traefik.frontend.rule=Path:/,/assets/{asset:.+}"
+            - "traefik.port=80"
+            - "traefik.protocol=http"
         volumes:
             - ./frontend:/var/www
 
@@ -45,7 +45,7 @@ services:
         labels:
             - "traefik.docker.network=web"
             - "traefik.enable=true"
-            - "traefik.frontend.rule=PathPrefix: /{id:.+}"
+            - "traefik.frontend.rule=Path: /{id:.+}"
             - "traefik.port=1215"
             - "traefik.protocol=http"
     redis:
