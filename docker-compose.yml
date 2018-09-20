@@ -1,12 +1,59 @@
 version: '3'
+
+#
+# THIS IS A DEVELOPMENT SETUP AND IS THEREFORE NOT SUITABLE FOR PRODUCTION!!!
+#
+
 services:
+    traefik:
+        image: traefik:1.5.4
+        ports:
+            - 80:80
+            - 8080:8080
+        networks:
+            - web
+        labels:
+            # This tells the load balancer that this container is not an endpoint
+            - "traefik.enable=false"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./traefik/traefik.toml:/traefik.toml
+
+    frontend:
+        build:
+            context: .
+            dockerfile: build/frontend/Dockerfile
+        networks:
+            - web
+            - default
+        labels:
+            - "traefik.docker.network=web"
+            - "traefik.enable=true"
+            - "traefik.basic.frontend.rule=PathPrefix: /"
+            - "traefik.basic.port=80"
+            - "traefik.basic.protocol=http"
+        volumes:
+            - ./frontend:/var/www
+
     backend:
         build:
             context: .
-            dockerfile: build/Dockerfile
-        ports:
-            - 1215:1215
+            dockerfile: build/backend/Dockerfile
+        networks:
+            - web
+            - default
+        labels:
+            - "traefik.docker.network=web"
+            - "traefik.enable=true"
+            - "traefik.frontend.rule=PathPrefix: /{id:.+}"
+            - "traefik.port=1215"
+            - "traefik.protocol=http"
     redis:
         image: redis
-        ports:
-            - 6379:6379
+        labels:
+            # This tells the load balancer that this container is not an endpoint
+            - "traefik.enable=false"
+
+networks:
+  web:
+    external: true
