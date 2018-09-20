@@ -2,7 +2,7 @@
 FROM composer as backend
 WORKDIR /app
 
-COPY composer.json composer.lock /app/
+COPY backend/composer.json backend/composer.lock /app/
 RUN composer install  \
     --ignore-platform-reqs \
     --no-autoloader \
@@ -11,7 +11,7 @@ RUN composer install  \
     --no-interaction \
     --no-scripts
 
-COPY . /app/
+COPY backend /app/
 RUN composer dump-autoload --optimize --classmap-authoritative
 
 # Build frontend assets
