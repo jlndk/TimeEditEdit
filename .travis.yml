@@ -6,11 +6,13 @@ php:
 cache:
   apt: true
   directories:
-    - node_modules
-    - vendor
+    # - node_modules
+    - backend/vendor
     - $HOME/.composer/cache
 
 before_install:
+    #Since the backend is in a subdirectory we cd into it
+    - cd backend
     #Disable xdebug to reduce build times drasticly
     - phpenv config-rm xdebug.ini
 
