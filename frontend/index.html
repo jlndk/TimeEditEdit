@@ -133,6 +133,7 @@
             width: 20px;
             background-color: #eee;
             border: 1px solid #ccc;
+            z-index: 1;
         }
 
         /* On mouse-over, add a grey background color */
@@ -191,6 +192,51 @@
             margin: 0;
             padding: 0;
         }
+
+        .popup {
+            position: fixed;
+            background-color: rgba(0,0,0,0.4);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 999;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup .popup-container{
+            background-color: white;
+            border-radius: 15px;
+            padding: 35px 5px 10px 15px;
+            width: 100%;
+            max-width: 700px;
+
+            position: relative;
+        }
+
+        .popup .btn-close {
+            background: none;
+            border: 0px;
+            box-shadow: none;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 24pt;
+        }
+
+        .popup-content {
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .popup-content p img {
+            height: 25px;
+        }
     </style>
 
     <!-- Lazyload assets in browsers that has javascript, and revert back to normal loading when they dont -->
@@ -201,6 +247,34 @@
 </head>
 
 <body>
+
+    <aside class="popup">
+        <article class="popup-container">
+            <button class="btn-close">&times;</button>
+            <div class="popup-content">
+                <h1>How do I use this site?</h1>
+                <p>To use this service you need to obtain the id of a valid schedule on TimeEdit.</p>
+                <p>This can easily be done though the TimeEdit website, once you have configured/have access to your schedule.</p>
+                <p>On the page for your chosen schedule you need to obtain the subscribtion link by pressing the <img src="/assets/img/instructions-subscribe.png" alt="Subscribtion Button"> button and make a copy of the link that is now shown.</p>
+                <p>The link should be in the following format: https://cloud.timeedit.net/itu/web/public/<b>abc123abc123</b>.ics</p>
+                <p>The id that should be provided to this service is the text between <i>public/</i> and <i>.ics</i> (<b>abc123abc123</b> in the example above)</p>
+                <p>Now that the TimeEdit id is obtain, you simply need to paste the link in the textbox on this site. You will now immedially be presented with a new link that can be pasted directly into your calendar program of choise.</p>
+
+                <b>Enjoy your new shiny schedule!</b>
+                <br><br>
+
+
+                <h1>How does it work?</h1>
+                <p>TimeEditEdit acts as a proxy (middleman) between your calendar program (such as Google calendar and outlook) and TimeEdit.</p>
+                <p>This means that when your calendar program tries to fetch new updates to the schedule, it asks our service instead of TimeEdit directly.</p>
+                <p>Our service then downloads the schedule from TimeEdit, performs the transformations and proper formatting and then sends it to your calendar program.</p>
+
+                <p>In more technical terms the TimeEdit schedule is distribued as an ICS file (which is the de-facto standard file type for distributing and sharing calendar events).</p>
+                <p>By parsing this file we can extract the important information, perform sensible modifications (such as translations) and afterwards generate a new ICS file that is send to your calendar program.</p>
+            </div>
+        </article>
+    </aside>
+
     <main>
         <h1>TimeEditEdit</h1>
 
@@ -214,7 +288,7 @@
 
         <label for="input">Enter TimeEdit Id Here:</label>
         <input class="text-input" type="text" id="input" placeholder="Enter your timeedit id here" aria-label="Enter your timeedit id here">
-        <a id="popup-trigger" href="#">How do i get my TimeEdit id?</a>
+        <a id="popup-trigger" href="#">How do I use this site?</a>
 
         <h2>Options:</h2>
 
