@@ -195,7 +195,7 @@
 
         .popup {
             position: fixed;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0,0,0,0.7);
             top: 0;
             left: 0;
             right: 0;
@@ -207,6 +207,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
+            pointer-events: none;
+            opacity: 0;
+
+            transition: opacity 200ms linear;
+        }
+
+        .popup.open {
+            opacity: 1;
+            pointer-events: all;
         }
 
         .popup .popup-container{
@@ -217,6 +227,16 @@
             max-width: 700px;
 
             position: relative;
+
+            transform: translateY(-100%);
+            opacity: 0;
+
+            transition: transform 500ms ease-in-out, opacity 200ms linear;
+        }
+
+        .popup.open .popup-container {
+            transform: translateY(0%);
+            opacity: 1;
         }
 
         .popup .btn-close {
@@ -248,7 +268,7 @@
 
 <body>
 
-    <aside class="popup">
+    <aside class="popup" id="howto-popup">
         <article class="popup-container">
             <button class="btn-close">&times;</button>
             <div class="popup-content">

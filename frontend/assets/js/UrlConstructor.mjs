@@ -3,7 +3,6 @@ import Dispatcher from './Dispatcher.mjs';
 export default class UrlConstructor extends Dispatcher {
     constructor() {
         super();
-        console.log("Url constructor");
 
         //@TODO: Get this dynamicly
         this.domain = "https://timeedit.jlndk.me";
