@@ -1,105 +1,48 @@
 # TimeEditEdit [![Build Status](https://travis-ci.com/jlndk/TimeEditEdit.svg?token=Z7mGDrupT1K1s1gYayzJ&branch=master)](https://travis-ci.com/jlndk/TimeEditEdit)
+A proxy for intercepting the ugly TimeEdit Schedule and making it readable.
 
-## Getting Started
+## How do I use the service?
+Visit [https://timeedit.jlndk.me](https://timeedit.jlndk.me) and follow the instructions to get your new formatted calendar.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## How do it setup my own version of the service?
+Follow the instructions on our [Installation](https://github.com/jlndk/TimeEditEdit/wiki/Installation) page.
 
-### Prerequisites
-Since this project is based on the Laravel framework, you should check the official laravel installation guide for server requirements before you start. [Official Documentation](https://laravel.com/docs/5.6/installation#installation)
+## How does this service work?
+TimeEditEdit acts as a proxy (middleman) between your calendar program (such as Google calendar and outlook) and TimeEdit.
 
-#### Optional Dependencies
-Furthermore there are some optional dependencies that will either add features, improve the applications performance or the development/production environment.
-* [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) (if you want to use the included, and easy to use, way of running the servers.)
-* Redis. (Improved caching functionality. This is included in our docker setup, but if you for some reason want to stay away from docker, you can setup your own redis server, and edit the .env file accordingly)
+This means that when your calendar program tries to fetch new updates to the schedule, it asks our service instead of TimeEdit directly.
 
-### Installing
+Our service then downloads the schedule from TimeEdit, performs the transformations and proper formatting and then sends it to your calendar program.
 
-This project is build with a micro-service architecture, which means that each part of the application is seperated into smaller programs instead of a monolithic structure.
+In more technical terms the TimeEdit schedule is distribued as an ICS file (which is the de-facto standard file type for distributing and sharing calendar events).
 
-Clone the repository
-
-    git clone https://github.com/jlndk/TimeEditEdit.git
-
-Switch to the backend folder
-
-    cd TimeEditEdit/backend
-
-Install all the dependencies using composer
-
-    composer install
-
-Copy the example env file and make the required configuration changes in the .env file
-
-    cp .env.example .env
-
-Generate a new application key
-
-    php artisan key:generate
-
-Start the local development server
-
-    docker-compose up -d
-
-You can now access the server at http://localhost
-
-If you don't want to use Docker you can start a development server this way:
-
-    php artisan serve
-
-You can now access the server at http://localhost:8000
-
-## Running the tests
-
-For now we only find it nessesary to write automated tests for the backend.
-
-### Unit & Feature Tests
-
-The unit & feature tests, which are written in the test framework PHPUnit, tests if all the components of the program works as expected.
-
-```
-./vendor/bin/phpunit
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-./vendor/bin/phpcs --standard=ruleset.xml app tests
-```
-
-## Deployment
-
-@TODO
-
-## Built With
-
-* [Laravel](https://laravel.com/) - The web framework used
-* [Docker](https://docs.docker.com/)- @TODO 
-* [Docker Compose](https://docs.docker.com/compose/) - @TODO
-* Redis - Improved caching functionality.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+By parsing this file we can extract the important information, perform sensible modifications (such as translations) and afterwards generate a new ICS file that is send to your calendar program.
 
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
-## Authors
+## Contributing
 
-* **Jonas Lindenskov Nielsen** - *Initial work & implementation* - [Jlndk](https://github.com/jlndk)
-* **Simon** - *Initial work* - [Duckapple](https://github.com/Duckapple)
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+## Built With
+
+* [Laravel](https://laravel.com/) - The web framework used.
+* [Redis](https://redis.io/) - Improved caching functionality.
+* [Docker](https://docs.docker.com/)- Used for containerization and deployment of services.
+* [Docker Compose](https://docs.docker.com/compose/) - Used for orchestrating the containers.
 
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
+## Authors
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* [Jlndk](https://github.com/jlndk) - *Implementation and maintainer*.
+* [Duckapple](https://github.com/Duckapple) - *Initial correspondance*.
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## Acknowledgments
+* Hat tip to [@duckapple](https://github.com/Duckapple) for motivating me to make this project
