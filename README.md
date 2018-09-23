@@ -18,6 +18,10 @@ In more technical terms the TimeEdit schedule is distribued as an ICS file (whic
 
 By parsing this file we can extract the important information, perform sensible modifications (such as translations) and afterwards generate a new ICS file that is send to your calendar program.
 
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
@@ -32,10 +36,6 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 * [Redis](https://redis.io/) - Improved caching functionality.
 * [Docker](https://docs.docker.com/)- Used for containerization and deployment of services.
 * [Docker Compose](https://docs.docker.com/compose/) - Used for orchestrating the containers.
-
-## License
-
-This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Authors
 
