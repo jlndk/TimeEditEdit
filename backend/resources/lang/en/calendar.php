@@ -6,6 +6,7 @@ return [
         'lecture' => 'Lecture',
         'exercises' => 'Exercises',
         'workshop' => 'Workshop',
+        'ordinary exam' => 'Exam',
     ],
 
     'lectors' => 'Lector|Lectors',
