@@ -253,4 +253,45 @@ class TimeEditParserTest extends TestCase
         $this->assertEquals($parser->roomPrefix(), trans_choice('calendar.rooms', 2));
         $this->assertEquals($parser->rooms(), '2A52, 2A54, 3A18 & 3A52');
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itCanParseASingleProgramme()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:".
+                    "Programme: SWU 1st year\,".
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals('SWU 1st year', $parser->programme());
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itCanParseMultipleProgrammes()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:".
+                    "Programme: DS 1st year\, ".
+                    "Programme: SDT - Software Design SD\, ".
+                    "Programme: SDT - Software Development\,".
+                    "Programme: SWU 1st year\,\n".
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals('DS 1st year, SDT - Software Design SD, SDT - Software Development & SWU 1st year', $parser->programme());
+    }
 }

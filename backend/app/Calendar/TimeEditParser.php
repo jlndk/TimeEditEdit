@@ -148,7 +148,19 @@ class TimeEditParser
 
     public function programme()
     {
+        if (is_array($this->programme)) {
+            return natural_implode_unique($this->programme);
+        }
+
         return $this->programme;
+    }
+
+    /**
+     * Alias for programme
+     */
+    public function programmes()
+    {
+        return $this->programme();
     }
 
     public function __construct(Event $event)
