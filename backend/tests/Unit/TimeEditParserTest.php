@@ -292,6 +292,8 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals('DS 1st year, SDT - Software Design SD, SDT - Software Development & SWU 1st year', $parser->programme());
+        $res = 'DS 1st year, SDT - Software Design SD, SDT - Software Development & SWU 1st year';
+
+        $this->assertEquals($res, $parser->programme());
     }
 }
