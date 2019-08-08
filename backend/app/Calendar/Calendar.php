@@ -91,7 +91,7 @@ class Calendar implements Responsable
      * @param  string  $content The actual content of an ICS file
      * @return $this
      */
-    protected function parse($content)
+    protected function parse($content) : Calendar
     {
         $content = str_replace("\r\n ", '', $content);
 
@@ -121,7 +121,7 @@ class Calendar implements Responsable
      * @param  string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
      * @return $this
      */
-    public function create($content)
+    public function create($content) : Calendar
     {
         $isUrl  = strpos($content, 'http') === 0 && filter_var($content, FILTER_VALIDATE_URL);
         $isFile = strpos($content, "\n") === false && file_exists($content);

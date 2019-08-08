@@ -2,26 +2,33 @@
 
 namespace App\Calendar;
 
-use \GuzzleHttp\Client;
+use GuzzleHttp\Client;
+use Psr\Http\Message\StreamInterface;
 
 class RemoteCalendar implements \Serializable
 {
+    /**
+     * @var string|null
+     */
     protected $url;
 
+    /**
+     * @var \GuzzleHttp\Client
+     */
     protected $client;
 
-    public function __construct($url = null, Client $client)
+    public function __construct(?string $url = null, Client $client)
     {
         $this->url = $url;
         $this->client = $client;
     }
 
-    public function getUrl()
+    public function getUrl() : string
     {
-        return $url;
+        return $this->url;
     }
 
-    public function setUrl($url)
+    public function setUrl(string $url)
     {
         $this->url = $url;
         return $this;
@@ -33,7 +40,7 @@ class RemoteCalendar implements \Serializable
         return $this;
     }
 
-    public function fetch()
+    public function fetch() : StreamInterface
     {
         $res = $this->client->request('GET', $this->url);
 

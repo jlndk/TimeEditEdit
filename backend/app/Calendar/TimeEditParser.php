@@ -49,7 +49,7 @@ class TimeEditParser
     protected $studyActivities;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $activity;
 
@@ -69,16 +69,16 @@ class TimeEditParser
     protected $courseType;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $programme;
 
-    public function id()
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function studyActivities()
+    public function studyActivities() : string
     {
         if (is_array($this->studyActivities)) {
             return natural_implode_unique($this->studyActivities);
@@ -87,7 +87,7 @@ class TimeEditParser
         return $this->studyActivities;
     }
 
-    public function activity()
+    public function activity() : string
     {
         if (is_array($this->activity)) {
             $translatedActivities = $this->activity;
@@ -106,7 +106,7 @@ class TimeEditParser
         return __('calendar.activity.'.$this->activity);
     }
 
-    public function lectors()
+    public function lectors() : string
     {
         if (is_array($this->lectors)) {
             return natural_implode_unique($this->lectors);
@@ -118,17 +118,17 @@ class TimeEditParser
     /**
      * Alias for lectors
      */
-    public function lector()
+    public function lector() : string
     {
         return $this->lectors();
     }
 
-    public function lectorPrefix()
+    public function lectorPrefix() : string
     {
         return trans_choice('calendar.lectors', @count($this->lectors));
     }
 
-    public function rooms()
+    public function rooms() : string
     {
         if (is_array($this->rooms)) {
             return natural_implode_unique($this->rooms);
@@ -140,22 +140,22 @@ class TimeEditParser
     /**
      * Alias for rooms
      */
-    public function room()
+    public function room() : string
     {
         return $this->rooms();
     }
 
-    public function roomPrefix()
+    public function roomPrefix() : string
     {
         return trans_choice('calendar.rooms', @count($this->rooms));
     }
 
-    public function courseType()
+    public function courseType() : string
     {
         return $this->courseType;
     }
 
-    public function programme()
+    public function programme() : string
     {
         if (is_array($this->programme)) {
             return natural_implode_unique($this->programme);
@@ -167,7 +167,7 @@ class TimeEditParser
     /**
      * Alias for programme
      */
-    public function programmes()
+    public function programmes() : string
     {
         return $this->programme();
     }
@@ -179,7 +179,7 @@ class TimeEditParser
         $this->parse();
     }
 
-    protected function parse()
+    protected function parse() : void
     {
         //Fix inconsistencies in formatting
         $summary = str_replace("Study Activity,  :", "Study Activity  :", $this->event->summary);
@@ -210,7 +210,7 @@ class TimeEditParser
         }
     }
 
-    protected function getAttributes($summary)
+    protected function getAttributes(string $summary) : array
     {
         $attributes = [];
 
@@ -231,7 +231,7 @@ class TimeEditParser
         return $this->flattenAttributes($attributes);
     }
 
-    protected function flattenAttributes($attributes)
+    protected function flattenAttributes(array $attributes) : array
     {
         /**
          * If there's only one element in an array we flatten it
@@ -245,7 +245,7 @@ class TimeEditParser
         return $attributes;
     }
 
-    protected function formatMatchedData($type, $matches)
+    protected function formatMatchedData(string $type, array $matches) : string
     {
         switch ($type) {
             case "activity":
@@ -260,7 +260,7 @@ class TimeEditParser
                 return $matches[1];
         }
 
-        return [];
+        return "";
     }
 
     protected function reorderMatches(array $matches) : array

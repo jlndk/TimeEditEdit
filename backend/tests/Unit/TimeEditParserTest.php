@@ -11,8 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class TimeEditParserTest extends TestCase
 {
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -42,8 +40,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -67,8 +63,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -95,8 +89,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -118,8 +110,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -143,8 +133,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -169,8 +157,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -193,8 +179,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -218,8 +202,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -261,8 +243,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -284,8 +264,6 @@ class TimeEditParserTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */

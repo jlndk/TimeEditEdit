@@ -10,7 +10,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\Exception\RequestException;
 
 class CalendarControllerTest extends TestCase
 {

@@ -11,8 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CalendarTest extends TestCase
 {
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -27,8 +25,6 @@ class CalendarTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */
@@ -54,8 +50,6 @@ class CalendarTest extends TestCase
     }
 
     /**
-     * A description for this test
-     *
      * @test
      * @return void
      */

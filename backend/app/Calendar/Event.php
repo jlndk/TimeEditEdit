@@ -63,7 +63,7 @@ class Event
         }
     }
 
-    public function duration()
+    public function duration() : int
     {
         if ($this->dateEnd) {
             return $this->dateStart->diffInSeconds($this->dateEnd);
@@ -95,7 +95,7 @@ class Event
         return $this->render();
     }
 
-    public function parse($content)
+    public function parse($content) : Event
     {
         $content = str_replace("\r\n ", '', $content);
 

@@ -20,7 +20,7 @@ class EventTransformer
         $this->info = new TimeEditParser($event);
     }
 
-    public function summary()
+    public function summary() : string
     {
         $activity = $this->info->activity();
 
@@ -35,7 +35,7 @@ class EventTransformer
         return $activity . $this->info->studyActivities();
     }
 
-    public function description()
+    public function description() : string
     {
         $description = $this->info->lectorPrefix() . ": " . $this->info->lectors()."\\n";
         $description .= __('calendar.programme'). ": " . $this->info->programme()."\\n";
@@ -44,12 +44,12 @@ class EventTransformer
         return $description;
     }
 
-    public function location()
+    public function location() : string
     {
         return $this->info->roomPrefix() . ": " . $this->info->rooms();
     }
 
-    public function transform()
+    public function transform() : Event
     {
         $this->event->summary = $this->summary();
         $this->event->description = $this->description();
