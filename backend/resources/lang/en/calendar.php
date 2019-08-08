@@ -7,6 +7,8 @@ return [
         'exercises' => 'Exercises',
         'workshop' => 'Workshop',
         'ordinary exam' => 'Exam',
+        'reexam' => 'Reexam',
+        'reexam - on premises' => 'Reexam',
     ],
 
     'lectors' => 'Lector|Lectors',

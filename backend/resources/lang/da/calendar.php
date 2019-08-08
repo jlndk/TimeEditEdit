@@ -7,6 +7,8 @@ return [
         'exercises' => 'Øvelsestime',
         'workshop' => 'Workshop',
         'ordinary exam' => 'Eksamen',
+        'reexam' => 'Reeksamen',
+        'reexam - on premises' => 'Reeksamen',
     ],
 
     'lectors' => 'Lektor|Lektorer',
