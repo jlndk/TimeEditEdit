@@ -106,7 +106,7 @@ class TimeEditParser
         return __('calendar.activity.'.$this->activity);
     }
 
-    public function lectors() : string
+    public function lectors() : ?string
     {
         if (is_array($this->lectors)) {
             return natural_implode_unique($this->lectors);
@@ -155,7 +155,7 @@ class TimeEditParser
         return $this->courseType;
     }
 
-    public function programme() : string
+    public function programme() : ?string
     {
         if (is_array($this->programme)) {
             return natural_implode_unique($this->programme);
@@ -167,7 +167,7 @@ class TimeEditParser
     /**
      * Alias for programme
      */
-    public function programmes() : string
+    public function programmes() : ?string
     {
         return $this->programme();
     }

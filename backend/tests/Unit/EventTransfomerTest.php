@@ -101,4 +101,55 @@ class EventTransfomerTest extends TestCase
         $this->assertEquals($expectedDescription, $transformer->description());
         $this->assertEquals(trans_choice('calendar.rooms', 1) . ': 2A20', $transformer->location());
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itWillNotIncludeLectorsIfNoneAreProvided()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+            "SUMMARY:Study Activity\,  : Study Assistance\, " .
+            "Programme: SWU 1st year\n" .
+            "LOCATION:Room: 3A50\n" .
+            "DESCRIPTION:ID 43107\n" .
+            "END:VEVENT";
+
+        $orgEvent = new Event($rawData);
+        $transformer = tap(new EventTransformer($orgEvent))->transform();
+
+        $expectedDescription =  __('calendar.programme') . ': SWU 1st year\n' .
+                                __('calendar.timeedit_id') . ': 43107';
+
+        $this->assertEquals('Study Assistance', $transformer->summary());
+        $this->assertEquals($expectedDescription, $transformer->description());
+        $this->assertEquals(trans_choice('calendar.rooms', 1) . ': 3A50', $transformer->location());
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itWillNotIncludeProgrammeIfNoneAreProvided()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+            "SUMMARY:Study Activity\,  : " .
+            "Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Claus Brabrand\, " .
+            "Course type: Mandatory\,  " .
+            "Activity: Lecture\n" .
+            "LOCATION:Room: Aud 1 (0A11)\n" .
+            "DESCRIPTION:ID 39280\n" .
+            "END:VEVENT";
+
+        $orgEvent = new Event($rawData);
+        $transformer = tap(new EventTransformer($orgEvent))->transform();
+
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Claus Brabrand\n'.
+                                __('calendar.timeedit_id') . ': 39280';
+
+        $this->assertEquals(__('calendar.activity.lecture') . ': Grundlæggende programmering', $transformer->summary());
+        $this->assertEquals($expectedDescription, $transformer->description());
+        $this->assertEquals(trans_choice('calendar.rooms', 1) . ': Aud 1 (0A11)', $transformer->location());
+    }
 }

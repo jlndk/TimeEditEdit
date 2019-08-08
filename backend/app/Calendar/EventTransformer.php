@@ -37,8 +37,19 @@ class EventTransformer
 
     public function description() : string
     {
-        $description = $this->info->lectorPrefix() . ": " . $this->info->lectors()."\\n";
-        $description .= __('calendar.programme'). ": " . $this->info->programme()."\\n";
+        $lectors = $this->info->lectors();
+        $programme = $this->info->programme();
+
+        $description = "";
+
+        if ($lectors !== null) {
+            $description .= $this->info->lectorPrefix() . ": " . $lectors . "\\n";
+        }
+
+        if ($programme !== null) {
+            $description .= __('calendar.programme') . ": " . $programme . "\\n";
+        }
+
         $description .= __('calendar.timeedit_id'). ": " . $this->info->id();
 
         return $description;
