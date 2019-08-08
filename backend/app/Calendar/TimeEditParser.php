@@ -99,7 +99,7 @@ class TimeEditParser
             return natural_implode_unique($translatedActivities);
         }
 
-        if($this->activity == "") {
+        if ($this->activity == "") {
             return "";
         }
         
