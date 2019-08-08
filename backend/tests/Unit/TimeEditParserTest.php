@@ -33,12 +33,12 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->studyActivities(), 'Grundlæggende programmering');
-        $this->assertEquals($parser->activity(), __('calendar.activity.lecture'));
-        $this->assertEquals($parser->lectors(), 'Claus Brabrand, Dan Witzner Hansen & Signe Kyster');
-        $this->assertEquals($parser->lectorPrefix(), trans_choice('calendar.lectors', 3));
-        $this->assertEquals($parser->courseType(), 'Mandatory');
-        $this->assertEquals($parser->programme(), 'SWU 1st year');
+        $this->assertEquals('Grundlæggende programmering', $parser->studyActivities());
+        $this->assertEquals(__('calendar.activity.lecture'), $parser->activity());
+        $this->assertEquals('Claus Brabrand, Dan Witzner Hansen & Signe Kyster', $parser->lectors());
+        $this->assertEquals(trans_choice('calendar.lectors', 3), $parser->lectorPrefix());
+        $this->assertEquals('Mandatory', $parser->courseType());
+        $this->assertEquals('SWU 1st year', $parser->programme());
     }
 
     /**
@@ -60,10 +60,38 @@ class TimeEditParserTest extends TestCase
 
         $parser = new TimeEditParser($event);
 
-        $this->assertEquals($parser->studyActivities(), 'Study Assistance');
-        $this->assertEquals($parser->lectors(), 'Dan Witzner Hansen');
-        $this->assertEquals($parser->lectorPrefix(), trans_choice('calendar.lectors', 1));
-        $this->assertEquals($parser->programme(), 'SWU 1st year');
+        $this->assertEquals('Study Assistance', $parser->studyActivities());
+        $this->assertEquals('Dan Witzner Hansen', $parser->lectors());
+        $this->assertEquals(trans_choice('calendar.lectors', 1), $parser->lectorPrefix());
+        $this->assertEquals('SWU 1st year', $parser->programme());
+    }
+
+    /**
+     * A description for this test
+     *
+     * @test
+     * @return void
+     */
+    public function itCanParseAnReexamSummary()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+                    "SUMMARY:Study Activity\,  : " .
+                    "Førsteårsprojekt: Danmarkskort. Visualisering\, Navigation\, Søgning og Rute. 1413001U\, " .
+                    "Name: Troels Bjerre Lund\, Programme: SWU 1st year\,  Activity: Reexam" .
+                    "LOCATION:Room: 2A20\n" .
+                    "DESCRIPTION:ID 54626\n" .
+                    "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $expectedStudtActivities = 'Førsteårsprojekt: Danmarkskort. Visualisering, Navigation, Søgning og Rute';
+
+        $this->assertEquals($expectedStudtActivities, $parser->studyActivities());
+        $this->assertEquals('Troels Bjerre Lund', $parser->lectors());
+        $this->assertEquals(trans_choice('calendar.lectors', 1), $parser->lectorPrefix());
+        $this->assertEquals('SWU 1st year', $parser->programme());
     }
 
     /**
@@ -131,11 +159,13 @@ class TimeEditParserTest extends TestCase
 
         $event = new Event($rawData);
 
+        // dd($event);
+
         $parser = new TimeEditParser($event);
 
         $expectedActivities = 'Projektarbejde og kommunikation & Grundlæggende programmering';
 
-        $this->assertEquals($parser->studyActivities(), $expectedActivities);
+        $this->assertEquals($expectedActivities, $parser->studyActivities());
     }
 
     /**
@@ -208,6 +238,26 @@ class TimeEditParserTest extends TestCase
         $parser = new TimeEditParser($event);
 
         $this->assertEquals($parser->activity(), __('calendar.activity.exercises'));
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function whenNoActivtyIsGivenItShouldBeReturnedEmpty()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+            "SUMMARY:" .
+            "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Claus Brabrand\, " .
+            "Programme: SWU 1st year\, " .
+            "Course type: Mandatory\,  " .
+            "END:VEVENT";
+
+        $event = new Event($rawData);
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals("", $parser->activity());
     }
 
     /**

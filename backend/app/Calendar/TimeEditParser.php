@@ -9,7 +9,11 @@ class TimeEditParser
      * @var array
      */
     protected $expressions = [
-        'study_activity' => '/Study Activity  : ([^\.]+)\.? ([^,]+)/',
+        'study_activity' => '/Study Activity,?  : (.{1,}?)\. ([A-ZÆØÅ\-\d]+),/',
+        
+        //Edge case for study activity
+        'study_assistance' => '/Study Activity,?  : (Study Assistance),/',
+
         'lector' => '/Name: ([^,]+)/',
         'programme' => '/Programme: ([^,]+)/',
         'course_type' => '/Course type: ([^,]+)/',
@@ -23,6 +27,7 @@ class TimeEditParser
     protected $attributeMap = [
         'activity' => 'activity',
         'study_activity' => 'studyActivities',
+        'study_assistance' => 'studyActivities',
         'lector' => 'lectors',
         'programme' => 'programme',
         'course_type' => 'courseType'
@@ -94,6 +99,10 @@ class TimeEditParser
             return natural_implode_unique($translatedActivities);
         }
 
+        if($this->activity == "") {
+            return "";
+        }
+        
         return __('calendar.activity.'.$this->activity);
     }
 
@@ -203,15 +212,12 @@ class TimeEditParser
 
     protected function getAttributes($summary)
     {
-        //Break the string into an array of segments (maked by a ,)
-        $parts = explode(",", $summary);
-
         $attributes = [];
 
-        foreach ($parts as $part) {
-            foreach ($this->expressions as $type => $expression) {
-                if (preg_match($expression, $part, $matches)) {
-                    $parsedData = $this->formatMatchedData($type, $matches);
+        foreach ($this->expressions as $type => $expression) {
+            if (preg_match_all($expression, $summary, $matches)) {
+                foreach ($this->reorderMatches($matches) as $match) {
+                    $parsedData = $this->formatMatchedData($type, $match);
 
                     if (!array_key_exists($type, $attributes)) {
                         $attributes[$type] = [$parsedData];
@@ -244,13 +250,10 @@ class TimeEditParser
         switch ($type) {
             case "activity":
                 return strtolower($matches[1]);
+            //Handle inconsistencies
+            case "study_assistance":
+                return "Study Assistance";
             case "study_activity":
-                //Handle inconsistencies
-                if ($matches[1] == "Study" && $matches[2] == "Assistance") {
-                    return "Study Assistance";
-                }
-
-                return $matches[1];
             case "lector":
             case "programme":
             case "course_type":
@@ -258,5 +261,18 @@ class TimeEditParser
         }
 
         return [];
+    }
+
+    protected function reorderMatches(array $matches) : array
+    {
+        $newMatches = [];
+
+        foreach ($matches as $j => $match) {
+            for ($i = 0; $i < count($match); $i++) {
+                $newMatches[$i][$j] = $match[$i];
+            }
+        }
+
+        return $newMatches;
     }
 }

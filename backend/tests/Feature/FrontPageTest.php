@@ -15,11 +15,7 @@ class FrontPageTest extends TestCase
      */
     public function itCanLoadFrontPage()
     {
-        $this->withExceptionHandling();
-
-        $response = $this->get('/');
-
-        //@TODO: Change this to 200 when we implement frontpage
-        $response->assertStatus(404);
+        //Front pagecomes from frontend container
+        $this->get('/')->assertStatus(404);
     }
 }

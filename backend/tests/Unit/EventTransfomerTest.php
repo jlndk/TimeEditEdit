@@ -70,4 +70,35 @@ class EventTransfomerTest extends TestCase
         $this->assertEquals($expectedDescription, $transformer->description());
         $this->assertEquals(trans_choice('calendar.rooms', 1) . ': 3A50', $transformer->location());
     }
+
+    /**
+     * Test if the transformer returns the expected text format of each field
+     * for the default TimeEdit format
+     *
+     * @test
+     * @return void
+     */
+    public function itCanTransformAReexamEvent()
+    {
+        $rawData =  "BEGIN:VEVENT\n".
+                    "SUMMARY:Study Activity\,  : " .
+                    "Førsteårsprojekt: Danmarkskort. Visualisering\, Navigation\, Søgning og Rute. 1413001U\, ".
+                    "Name: Troels Bjerre Lund\, Programme: SWU 1st year\,  Activity: Reexam\n".
+                    "LOCATION:Room: 2A20\n".
+                    "DESCRIPTION:ID 54626\n".
+                    "END:VEVENT";
+
+        $orgEvent = new Event($rawData);
+
+        $transformer = tap(new EventTransformer($orgEvent))->transform();
+
+        $expectedSummary = __('calendar.activity.reexam') .
+                           ': Førsteårsprojekt: Danmarkskort. Visualisering, Navigation, Søgning og Rute';
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Troels Bjerre Lund\n' .
+            __('calendar.programme') . ': SWU 1st year\nTimeEdit ID: 54626';
+
+        $this->assertEquals($expectedSummary, $transformer->summary());
+        $this->assertEquals($expectedDescription, $transformer->description());
+        $this->assertEquals(trans_choice('calendar.rooms', 1) . ': 2A20', $transformer->location());
+    }
 }

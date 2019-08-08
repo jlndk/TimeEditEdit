@@ -37,9 +37,6 @@ class CalendarControllerTest extends TestCase
      */
     public function fetchingAnInvalidCalendarShouldResultInA404StatusCode()
     {
-        $this->withExceptionHandling();
-
-        $this->get('/abc123')
-        ->assertStatus(404);
+        $this->get('/abc123')->assertStatus(404);
     }
 }
