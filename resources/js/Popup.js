@@ -16,7 +16,7 @@ export default class Popup {
     }
 
     open() {
-        this.container.classList.add("open");
+        this.container.classList.remove("hidden");
         return this;
     }
 
@@ -25,7 +25,7 @@ export default class Popup {
     }
 
     close() {
-        this.container.classList.remove("open");
+        this.container.classList.add("hidden");
         return this;
     }
 
@@ -34,6 +34,6 @@ export default class Popup {
     }
 
     toggle() {
-        this.container.classList.toggle("open");
+        this.container.classList.toggle("hidden");
     }
 }

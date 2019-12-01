@@ -45,9 +45,9 @@ popupTrigger.addEventListener('click', evt => {
 
 url.addListener('update', data => {
     if(url.id != "") {
-        linkContainer.classList.add('has-text');
+        linkContainer.classList.remove('hidden');
     } else {
-        linkContainer.classList.remove('has-text');
+        linkContainer.classList.add('hidden');
     }
 
     linkDest.value = data.url;
