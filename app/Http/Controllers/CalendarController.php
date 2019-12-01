@@ -7,7 +7,6 @@ use App\Calendar\EventTransformer;
 use \App;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
@@ -18,7 +17,7 @@ class CalendarController extends Controller
         $this->calendar = $calendar;
     }
 
-    public function show($calid, Request $request)
+    public function show($calid)
     {
         //Try to fetch the calendar with this id from the cache
         $calendar = Cache::get($calid);

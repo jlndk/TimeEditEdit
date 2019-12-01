@@ -6,8 +6,6 @@ use App\Calendar\Event;
 use App\Calendar\EventTransformer;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EventTransfomerTest extends TestCase
 {

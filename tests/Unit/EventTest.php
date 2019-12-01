@@ -5,8 +5,6 @@ namespace Tests\Unit;
 use App\Calendar\Event;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EventTest extends TestCase
 {

@@ -5,8 +5,6 @@ namespace Tests\Unit;
 use \App;
 use App\Calendar\Calendar;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CalendarTest extends TestCase
 {
