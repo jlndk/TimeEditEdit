@@ -5,6 +5,12 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ["Open Sans", ...defaultTheme.fontFamily.sans]
+            },
+            maxHeight: {
+                '70%': '70%'
+            },
+            backgroundColor: {
+                'faded': 'rgba(0,0,0,0.8)',
             }
         }
     },

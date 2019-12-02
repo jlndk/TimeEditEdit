@@ -10,9 +10,12 @@ export default class Popup {
             }
         })
 
-        this.closeBtn.addEventListener('click', evt => {
-            this.close();
-        });
+        if(this.closeBtn !== null)
+        {
+            this.closeBtn.addEventListener('click', evt => {
+                this.close();
+            });
+        }
     }
 
     open() {
