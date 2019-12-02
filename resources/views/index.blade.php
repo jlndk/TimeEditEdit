@@ -47,6 +47,17 @@
 
             <h1 class="text-center text-4xl font-light">TimeEditEdit</h1>
 
+            <div class="link-container hidden mb-2">
+                <label class="font-bold" for="input">Here is your new improved link:</label>
+                <div class="flex bg-gray-200 rounded-lg">
+                    <input id="link-dest" type="text" class="bg-transparent px-3 py-3 w-full text-center placeholder-gray-700 text-gray-800" readonly>
+                    <button id="copy-btn" class="flex flex-col items-center justify-center px-1 border-l border-gray-400" style="width: 70px;"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 text-gray-900 fill-current"><path d="M6 6V2c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4zm2 0h4a2 2 0 0 1 2 2v4h4V2H8v4zM2 8v10h10V8H2z"/></svg>
+                        <span class="block text-xs text-gray-700">Copy</span>
+                    </button>
+                </div>
+            </div>
+
             <label for="input">Enter TimeEdit Id Here:</label>
             <div class="flex bg-gray-200 rounded-lg mb-2">
                 <input class="bg-transparent w-full px-3 py-3 placeholder-gray-700 text-gray-800" type="text" id="input" placeholder="Enter TimeEdit id here" aria-label="Enter TimeEdit id here">
@@ -61,17 +72,6 @@
                 </div>
                 How do i use this site?
             </a>
-
-            <div class="link-container hidden mb-2">
-                <label class="font-bold" for="input">Here is your new improved link:</label>
-                <div class="flex bg-gray-200 rounded-lg">
-                    <input id="link-dest" type="text" class="bg-transparent px-3 py-3 w-full text-center placeholder-gray-700 text-gray-800" readonly>
-                    <button id="copy-btn" class="flex flex-col items-center justify-center px-1 border-l border-gray-400" style="width: 70px;"> 
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 text-gray-900 fill-current"><path d="M6 6V2c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4zm2 0h4a2 2 0 0 1 2 2v4h4V2H8v4zM2 8v10h10V8H2z"/></svg>
-                        <span class="block text-xs text-gray-700">Copy</span>
-                    </button>
-                </div>
-            </div>
 
             <section id="customize-section" class="flex flex-col hidden mb-2">
                 <h2 class="font-bold">Customization:</h2>
