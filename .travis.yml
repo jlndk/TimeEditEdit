@@ -1,28 +1,26 @@
 language: php
 
 php:
-    - 7.2
+  - 7.4
 
 cache:
   apt: true
   directories:
-    # - node_modules
-    - backend/vendor
+    - node_modules
+    - vendor
     - $HOME/.composer/cache
 
 before_install:
-    #Since the backend is in a subdirectory we cd into it
-    - cd backend
-    #Disable xdebug to reduce build times drasticly
-    - phpenv config-rm xdebug.ini
+  #Disable xdebug to reduce build times drasticly
+  - phpenv config-rm xdebug.ini
 
 install:
-    - composer install --dev --prefer-source --no-interaction
+  - composer install --dev --prefer-source --no-interaction
 
 before_script:
-    - cp .env.travis .env
-    - php artisan key:generate
+  - cp .env.travis .env
+  - php artisan key:generate
 
 script:
-    - ./vendor/bin/phpunit
-    - ./vendor/bin/phpcs app tests --standard=ruleset.xml
+  - ./vendor/bin/phpunit
+  - ./vendor/bin/phpcs app tests --standard=ruleset.xml

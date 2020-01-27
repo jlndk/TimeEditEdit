@@ -1,0 +1,14 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.bg-itu {
+    background-image: url("/img/bg.jpg");
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
