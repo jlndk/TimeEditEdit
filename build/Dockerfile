@@ -44,6 +44,10 @@ FROM php:7.4-apache as app
 # # #Install php modules
 # RUN docker-php-ext-install mbstring curl zip
 
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
+
 RUN a2enmod rewrite
 
 COPY build/apache.conf /etc/apache2/sites-available/000-default.conf
