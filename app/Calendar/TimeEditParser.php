@@ -10,7 +10,7 @@ class TimeEditParser
      */
     protected $expressions = [
         'study_activity' => '/Study Activity,?  : (.{1,}?)\. ([A-ZÆØÅ\-\d]+),/',
-        
+
         //Edge case for study activity
         'study_assistance' => '/Study Activity,?  : (Study Assistance),/',
 
@@ -73,27 +73,33 @@ class TimeEditParser
      */
     protected $programme;
 
-    public function id() : string
+    public function id(): string
     {
         return $this->id;
     }
 
-    public function studyActivities() : ?string
+    public function studyActivities(): ?string
     {
-        if (is_array($this->studyActivities)) {
-            return natural_implode_unique($this->studyActivities);
+        if ($this->studyActivities === null) {
+            return null;
         }
 
-        return $this->studyActivities;
+        $items = $this->formatStudyActivities($this->studyActivities);
+
+        if (is_array($items)) {
+            return natural_implode_unique($items);
+        }
+
+        return $items;
     }
 
-    public function activity() : string
+    public function activity(): string
     {
         if (is_array($this->activity)) {
             $translatedActivities = $this->activity;
 
             foreach ($translatedActivities as $i => $activity) {
-                $translatedActivities[$i] = __('calendar.activity.'.$activity);
+                $translatedActivities[$i] = __('calendar.activity.' . $activity);
             }
 
             return natural_implode_unique($translatedActivities);
@@ -102,11 +108,11 @@ class TimeEditParser
         if ($this->activity == "") {
             return "";
         }
-        
-        return __('calendar.activity.'.$this->activity);
+
+        return __('calendar.activity.' . $this->activity);
     }
 
-    public function lectors() : ?string
+    public function lectors(): ?string
     {
         if (is_array($this->lectors)) {
             return natural_implode_unique($this->lectors);
@@ -118,17 +124,17 @@ class TimeEditParser
     /**
      * Alias for lectors
      */
-    public function lector() : string
+    public function lector(): string
     {
         return $this->lectors();
     }
 
-    public function lectorPrefix() : string
+    public function lectorPrefix(): string
     {
         return trans_choice('calendar.lectors', @count($this->lectors));
     }
 
-    public function rooms() : string
+    public function rooms(): string
     {
         if (is_array($this->rooms)) {
             return natural_implode_unique($this->rooms);
@@ -140,22 +146,22 @@ class TimeEditParser
     /**
      * Alias for rooms
      */
-    public function room() : string
+    public function room(): string
     {
         return $this->rooms();
     }
 
-    public function roomPrefix() : string
+    public function roomPrefix(): string
     {
         return trans_choice('calendar.rooms', @count($this->rooms));
     }
 
-    public function courseType() : string
+    public function courseType(): string
     {
         return $this->courseType;
     }
 
-    public function programme() : ?string
+    public function programme(): ?string
     {
         if (is_array($this->programme)) {
             return natural_implode_unique($this->programme);
@@ -167,7 +173,7 @@ class TimeEditParser
     /**
      * Alias for programme
      */
-    public function programmes() : ?string
+    public function programmes(): ?string
     {
         return $this->programme();
     }
@@ -179,7 +185,7 @@ class TimeEditParser
         $this->parse();
     }
 
-    protected function parse() : void
+    protected function parse(): void
     {
         //Fix inconsistencies in formatting
         $summary = str_replace("Study Activity,  :", "Study Activity  :", $this->event->summary);
@@ -210,7 +216,7 @@ class TimeEditParser
         }
     }
 
-    protected function getAttributes(string $summary) : array
+    protected function getAttributes(string $summary): array
     {
         $attributes = [];
 
@@ -231,7 +237,7 @@ class TimeEditParser
         return $this->flattenAttributes($attributes);
     }
 
-    protected function flattenAttributes(array $attributes) : array
+    protected function flattenAttributes(array $attributes): array
     {
         /**
          * If there's only one element in an array we flatten it
@@ -245,12 +251,12 @@ class TimeEditParser
         return $attributes;
     }
 
-    protected function formatMatchedData(string $type, array $matches) : string
+    protected function formatMatchedData(string $type, array $matches): string
     {
         switch ($type) {
             case "activity":
                 return strtolower($matches[1]);
-            //Handle inconsistencies
+                //Handle inconsistencies
             case "study_assistance":
                 return "Study Assistance";
             case "study_activity":
@@ -263,7 +269,7 @@ class TimeEditParser
         return "";
     }
 
-    protected function reorderMatches(array $matches) : array
+    protected function reorderMatches(array $matches): array
     {
         $newMatches = [];
 
@@ -274,5 +280,23 @@ class TimeEditParser
         }
 
         return $newMatches;
+    }
+
+    protected function formatStudyActivities($studyActivities)
+    {
+        $studyActivities = !is_array($studyActivities) ? [$studyActivities] : $studyActivities;
+        $set = [];
+
+        foreach ($studyActivities as $item) {
+            if (str_ends_with(strtolower($item), 'bsc', 'msc')) {
+                $item = trim(substr($item, 0, -3), " \t\n\r\0\x0B,");
+            }
+            $key = strtolower($item);
+            if (!array_key_exists($key, $set)) {
+                $set[$key] = $item;
+            }
+        }
+
+        return $set;
     }
 }

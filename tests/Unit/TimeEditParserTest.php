@@ -15,15 +15,15 @@ class TimeEditParserTest extends TestCase
     public function itCanParseANormalSummary()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
-                    "Name: Claus Brabrand\, ".
-                    "Name: Dan Witzner Hansen\, ".
-                    "Name: Signe Kyster\, ".
-                    "Programme: SWU 1st year\, ".
-                    "Course type: Mandatory\,  ".
-                    "Activity: Lecture\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Claus Brabrand\, " .
+            "Name: Dan Witzner Hansen\, " .
+            "Name: Signe Kyster\, " .
+            "Programme: SWU 1st year\, " .
+            "Course type: Mandatory\,  " .
+            "Activity: Lecture\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -44,11 +44,11 @@ class TimeEditParserTest extends TestCase
     public function itCanParseAStudyAssitanceSummary()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Study Assistance\, ".
-                    "Name: Dan Witzner Hansen\, ".
-                    "Programme: SWU 1st year\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Study Assistance\, " .
+            "Name: Dan Witzner Hansen\, " .
+            "Programme: SWU 1st year\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -67,12 +67,12 @@ class TimeEditParserTest extends TestCase
     public function itCanParseAnReexamSummary()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : " .
-                    "Førsteårsprojekt: Danmarkskort. Visualisering\, Navigation\, Søgning og Rute. 1413001U\, " .
-                    "Name: Troels Bjerre Lund\, Programme: SWU 1st year\,  Activity: Reexam" .
-                    "LOCATION:Room: 2A20\n" .
-                    "DESCRIPTION:ID 54626\n" .
-                    "END:VEVENT";
+            "SUMMARY:Study Activity\,  : " .
+            "Førsteårsprojekt: Danmarkskort. Visualisering\, Navigation\, Søgning og Rute. 1413001U\, " .
+            "Name: Troels Bjerre Lund\, Programme: SWU 1st year\,  Activity: Reexam" .
+            "LOCATION:Room: 2A20\n" .
+            "DESCRIPTION:ID 54626\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -93,11 +93,11 @@ class TimeEditParserTest extends TestCase
     public function itCanHandleOneLector()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
-                    "Name: Claus Brabrand\, ".
-                    "Programme: SWU 1st year\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Claus Brabrand\, " .
+            "Programme: SWU 1st year\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -114,13 +114,13 @@ class TimeEditParserTest extends TestCase
     public function itCanHandleMultipleLectors()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
-                    "Name: Claus Brabrand\, ".
-                    "Name: Dan Witzner Hansen\, ".
-                    "Name: Signe Kyster\, ".
-                    "Programme: SWU 1st year\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Claus Brabrand\, " .
+            "Name: Dan Witzner Hansen\, " .
+            "Name: Signe Kyster\, " .
+            "Programme: SWU 1st year\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -155,11 +155,11 @@ class TimeEditParserTest extends TestCase
     public function itCanHandleMultipleStudyActivities()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
-                    "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, ".
-                    "Name: Henriette Moos\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, " .
+            "Study Activity\,  : Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Henriette Moos\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -174,16 +174,76 @@ class TimeEditParserTest extends TestCase
 
     /**
      * @test
+     * @dataProvider removeUnwantedSuffixesProvider
+     * @return void
+     */
+    public function itWillRemoveUnwantedSuffixes($studyActivity, $suffix)
+    {
+        $rawData = "BEGIN:VEVENT\n" .
+            "SUMMARY:" .
+            $studyActivity .
+            "Name: Helge Pfeiffer\, Name: Mircea Lungu\, Name: Paolo Tell\, " .
+            "Programme: CS - 1st year\, Programme: SWU 2nd year\, " .
+            "Programme: SWU 3rd year\, Course type: Elective\,  Activity: Lecture\n" .
+            "DESCRIPTION:ID 39280\n" .
+            "LOCATION:Room: Aud 1 (0A11)\n" .
+            "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals($suffix, $parser->studyActivities());
+    }
+
+    public function removeUnwantedSuffixesProvider()
+    {
+        yield [
+            "Study Activity\,  : DevOps\, Software Evolution and Software Maintenance\, BSc. BSDSESM1KU\, ",
+            "DevOps, Software Evolution and Software Maintenance"
+        ];
+        yield [
+            "Study Activity\,  : DevOps\, Software Evolution and Software Maintenance\, MSc. KSDSESM1KU\, ",
+            "DevOps, Software Evolution and Software Maintenance"
+        ];
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itWillConsolidateActivitesWithSameName()
+    {
+        $rawData = "BEGIN:VEVENT\n" .
+            "SUMMARY:" .
+            "Study Activity\,  : DevOps\, Software Evolution and Software Maintenance\, BSc. BSDSESM1KU\, " .
+            "Study Activity\,  : DevOps\, Software Evolution and Software Maintenance\, MSc. KSDSESM1KU\, " .
+            "Name: Helge Pfeiffer\, Name: Mircea Lungu\, Name: Paolo Tell\, " .
+            "Programme: CS - 1st year\, Programme: SWU 2nd year\, " .
+            "Programme: SWU 3rd year\, Course type: Elective\,  Activity: Lecture\n" .
+            "DESCRIPTION:ID 39280\n" .
+            "LOCATION:Room: Aud 1 (0A11)\n" .
+            "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals("DevOps, Software Evolution and Software Maintenance", $parser->studyActivities());
+    }
+
+    /**
+     * @test
      * @return void
      */
     public function itCanHandleDublicateStudyActivities()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
-                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-2\, ".
-                    "Name: Henriette Moos\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, " .
+            "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-2\, " .
+            "Name: Henriette Moos\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -201,12 +261,12 @@ class TimeEditParserTest extends TestCase
     public function itCanHandleMultipleActivityTypes()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
-                    "Name: Henriette Moos\, ".
-                    "Activity: Exercises\,  ".
-                    "Activity: Lecture\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, " .
+            "Name: Henriette Moos\, " .
+            "Activity: Exercises\,  " .
+            "Activity: Lecture\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -224,12 +284,12 @@ class TimeEditParserTest extends TestCase
     public function itCanHandleDublicateActivityTypes()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, ".
-                    "Name: Henriette Moos\, ".
-                    "Activity: Exercises\,  ".
-                    "Activity: Exercises\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Study Activity\,  : Projektarbejde og kommunikation. 1407003U-1\, " .
+            "Name: Henriette Moos\, " .
+            "Activity: Exercises\,  " .
+            "Activity: Exercises\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -265,10 +325,10 @@ class TimeEditParserTest extends TestCase
     public function itCanParseOtherFields()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Activity: Lecture\n".
-                    "LOCATION:Room: Aud 1 (0A11)\n".
-                    "DESCRIPTION:ID 39280\n".
-                    "END:VEVENT";
+            "SUMMARY:Activity: Lecture\n" .
+            "LOCATION:Room: Aud 1 (0A11)\n" .
+            "DESCRIPTION:ID 39280\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -286,9 +346,9 @@ class TimeEditParserTest extends TestCase
     public function itCanParseMultipleRooms()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Activity: Lecture\n".
-                    "LOCATION:Room: 2A52\, Room: 2A54\, Room: 3A18\, Room: 3A52\n".
-                    "END:VEVENT";
+            "SUMMARY:Activity: Lecture\n" .
+            "LOCATION:Room: 2A52\, Room: 2A54\, Room: 3A18\, Room: 3A52\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -305,9 +365,9 @@ class TimeEditParserTest extends TestCase
     public function itCanParseASingleProgramme()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Programme: SWU 1st year\,".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Programme: SWU 1st year\," .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 
@@ -324,12 +384,12 @@ class TimeEditParserTest extends TestCase
     public function itCanParseMultipleProgrammes()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:".
-                    "Programme: DS 1st year\, ".
-                    "Programme: SDT - Software Design SD\, ".
-                    "Programme: SDT - Software Development\,".
-                    "Programme: SWU 1st year\,\n".
-                    "END:VEVENT";
+            "SUMMARY:" .
+            "Programme: DS 1st year\, " .
+            "Programme: SDT - Software Design SD\, " .
+            "Programme: SDT - Software Development\," .
+            "Programme: SWU 1st year\,\n" .
+            "END:VEVENT";
 
         $event = new Event($rawData);
 

@@ -19,21 +19,21 @@ class EventTransfomerTest extends TestCase
     public function itCanTransformANormalEvent()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : ".
-                    "Grundlæggende programmering. BSGRPRO1KU\, ".
-                    "Name: Claus Brabrand\, ".
-                    "Programme: SWU 1st year\, ".
-                    "Course type: Mandatory\,  ".
-                    "Activity: Lecture\n".
-                    "LOCATION:Room: Aud 1 (0A11)\n".
-                    "DESCRIPTION:ID 39280\n".
-                    "END:VEVENT";
+            "SUMMARY:Study Activity\,  : " .
+            "Grundlæggende programmering. BSGRPRO1KU\, " .
+            "Name: Claus Brabrand\, " .
+            "Programme: SWU 1st year\, " .
+            "Course type: Mandatory\,  " .
+            "Activity: Lecture\n" .
+            "LOCATION:Room: Aud 1 (0A11)\n" .
+            "DESCRIPTION:ID 39280\n" .
+            "END:VEVENT";
 
         $orgEvent = new Event($rawData);
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
-        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Claus Brabrand\n'.
-                                __('calendar.programme') . ': SWU 1st year\nTimeEdit ID: 39280';
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Claus Brabrand\n' .
+            __('calendar.programme') . ': SWU 1st year\nTimeEdit ID: 39280';
 
         $this->assertEquals(__('calendar.activity.lecture') . ': Grundlæggende programmering', $transformer->summary());
         $this->assertEquals($expectedDescription, $transformer->description());
@@ -41,8 +41,8 @@ class EventTransfomerTest extends TestCase
     }
 
     /**
-    * Test if the transformer returns the expected text format of each field
-    * for the Study Assistance format
+     * Test if the transformer returns the expected text format of each field
+     * for the Study Assistance format
      *
      * @test
      * @return void
@@ -50,19 +50,19 @@ class EventTransfomerTest extends TestCase
     public function itCanTransformAStudyAssistanceEvent()
     {
         $rawData =  "BEGIN:VEVENT\n" .
-                    "SUMMARY:Study Activity\,  : Study Assistance\, ".
-                    "Name: Dan Witzner Hansen\, ".
-                    "Programme: SWU 1st year\n".
-                    "LOCATION:Room: 3A50\n".
-                    "DESCRIPTION:ID 43107\n".
-                    "END:VEVENT";
+            "SUMMARY:Study Activity\,  : Study Assistance\, " .
+            "Name: Dan Witzner Hansen\, " .
+            "Programme: SWU 1st year\n" .
+            "LOCATION:Room: 3A50\n" .
+            "DESCRIPTION:ID 43107\n" .
+            "END:VEVENT";
 
         $orgEvent = new Event($rawData);
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
-        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Dan Witzner Hansen\n'.
-                                __('calendar.programme') . ': SWU 1st year\n'.
-                                __('calendar.timeedit_id') . ': 43107';
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Dan Witzner Hansen\n' .
+            __('calendar.programme') . ': SWU 1st year\n' .
+            __('calendar.timeedit_id') . ': 43107';
 
         $this->assertEquals('Study Assistance', $transformer->summary());
         $this->assertEquals($expectedDescription, $transformer->description());
@@ -78,20 +78,20 @@ class EventTransfomerTest extends TestCase
      */
     public function itCanTransformAReexamEvent()
     {
-        $rawData =  "BEGIN:VEVENT\n".
-                    "SUMMARY:Study Activity\,  : " .
-                    "Førsteårsprojekt: Danmarkskort. Visualisering\, Navigation\, Søgning og Rute. 1413001U\, ".
-                    "Name: Troels Bjerre Lund\, Programme: SWU 1st year\,  Activity: Reexam\n".
-                    "LOCATION:Room: 2A20\n".
-                    "DESCRIPTION:ID 54626\n".
-                    "END:VEVENT";
+        $rawData =  "BEGIN:VEVENT\n" .
+            "SUMMARY:Study Activity\,  : " .
+            "Førsteårsprojekt: Danmarkskort. Visualisering\, Navigation\, Søgning og Rute. 1413001U\, " .
+            "Name: Troels Bjerre Lund\, Programme: SWU 1st year\,  Activity: Reexam\n" .
+            "LOCATION:Room: 2A20\n" .
+            "DESCRIPTION:ID 54626\n" .
+            "END:VEVENT";
 
         $orgEvent = new Event($rawData);
 
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
         $expectedSummary = __('calendar.activity.reexam') .
-                           ': Førsteårsprojekt: Danmarkskort. Visualisering, Navigation, Søgning og Rute';
+            ': Førsteårsprojekt: Danmarkskort. Visualisering, Navigation, Søgning og Rute';
         $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Troels Bjerre Lund\n' .
             __('calendar.programme') . ': SWU 1st year\nTimeEdit ID: 54626';
 
@@ -117,7 +117,7 @@ class EventTransfomerTest extends TestCase
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
         $expectedDescription =  __('calendar.programme') . ': SWU 1st year\n' .
-                                __('calendar.timeedit_id') . ': 43107';
+            __('calendar.timeedit_id') . ': 43107';
 
         $this->assertEquals('Study Assistance', $transformer->summary());
         $this->assertEquals($expectedDescription, $transformer->description());
@@ -143,8 +143,8 @@ class EventTransfomerTest extends TestCase
         $orgEvent = new Event($rawData);
         $transformer = tap(new EventTransformer($orgEvent))->transform();
 
-        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Claus Brabrand\n'.
-                                __('calendar.timeedit_id') . ': 39280';
+        $expectedDescription =  trans_choice('calendar.lectors', 1) . ': Claus Brabrand\n' .
+            __('calendar.timeedit_id') . ': 39280';
 
         $this->assertEquals(__('calendar.activity.lecture') . ': Grundlæggende programmering', $transformer->summary());
         $this->assertEquals($expectedDescription, $transformer->description());
