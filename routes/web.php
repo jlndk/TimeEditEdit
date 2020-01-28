@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\FrontPageController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalendarController;
 
-Route::get('/', [FrontPageController::class, 'index']);
+Route::view('/', 'index');
 Route::get('/{calid}', [CalendarController::class, 'show']);

@@ -2,13 +2,14 @@
 
 namespace App\Calendar;
 
+use \App\Calendar\Event;
+
 class TimeEditParser
 {
     /**
      * The list of regular expression for each segment of the given text.
-     * @var array
      */
-    protected $expressions = [
+    protected array $expressions = [
         'study_activity' => '/Study Activity,?  : (.{1,}?)\. ([A-ZÆØÅ\-\d]+),/',
 
         //Edge case for study activity
@@ -22,9 +23,8 @@ class TimeEditParser
 
     /**
      * A map over which time edit fields matches this classes attributes
-     * @var array
      */
-    protected $attributeMap = [
+    protected array $attributeMap = [
         'activity' => 'activity',
         'study_activity' => 'studyActivities',
         'study_assistance' => 'studyActivities',
@@ -33,15 +33,9 @@ class TimeEditParser
         'course_type' => 'courseType'
     ];
 
-    /**
-     * @var \App\Calendar\Event
-     */
-    protected $event;
+    protected Event $event;
 
-    /**
-     * @var string
-     */
-    protected $id;
+    protected string $id;
 
     /**
      * @var string|array
@@ -64,7 +58,7 @@ class TimeEditParser
     protected $rooms;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $courseType;
 
@@ -72,6 +66,13 @@ class TimeEditParser
      * @var string|array
      */
     protected $programme;
+
+    public function __construct(Event $event)
+    {
+        $this->event = $event;
+
+        $this->parse();
+    }
 
     public function id(): string
     {
@@ -176,13 +177,6 @@ class TimeEditParser
     public function programmes(): ?string
     {
         return $this->programme();
-    }
-
-    public function __construct(Event $event)
-    {
-        $this->event = $event;
-
-        $this->parse();
     }
 
     protected function parse(): void

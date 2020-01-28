@@ -7,15 +7,8 @@ use Psr\Http\Message\StreamInterface;
 
 class RemoteCalendar implements \Serializable
 {
-    /**
-     * @var string|null
-     */
-    protected $url;
-
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    protected $client;
+    protected ?string $url;
+    protected Client $client;
 
     public function __construct(?string $url = null, Client $client)
     {
@@ -23,7 +16,7 @@ class RemoteCalendar implements \Serializable
         $this->client = $client;
     }
 
-    public function getUrl() : string
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -40,7 +33,7 @@ class RemoteCalendar implements \Serializable
         return $this;
     }
 
-    public function fetch() : StreamInterface
+    public function fetch(): StreamInterface
     {
         $res = $this->client->request('GET', $this->url);
 

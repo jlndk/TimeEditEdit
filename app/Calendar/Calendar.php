@@ -3,48 +3,40 @@
 namespace App\Calendar;
 
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 
 class Calendar implements Responsable
 {
     /**
      * The title of the entire calendar
-     *
-     * @var string
      */
-    public $title;
+    public ?string $title = null;
 
     /**
      * The description for the entire calendar
-     *
-     * @var string
      */
-    public $description;
+    public string $description = "";
 
     /**
      * PUBLISHED-TTL
-     *
-     * @var string
      */
-    public $published;
+    public ?string $published = null;
 
     /**
      * The list of all events in the calendar
-     *
-     * @var array
      */
-    public $events = array();
+    public array $events = [];
 
-    /**
-     * @var \App\Calendar\RemoteCalendar
-     */
-    protected $remoteCalendar;
+    protected RemoteCalendar $remoteCalendar;
 
     /**
      * Create a new Calendar. Optionally fill calendar with existing ICS data.
      *
      * @param string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
      */
-    public function __construct($content = null, RemoteCalendar $remoteCalendar)
+    public function __construct(?string $content = null, RemoteCalendar $remoteCalendar)
     {
         $this->remoteCalendar = $remoteCalendar;
 
@@ -57,7 +49,7 @@ class Calendar implements Responsable
      * Create an ICS compatable string from this existing calendar.
      * @return string The ICS formatted calendar.
      */
-    public function render() : string
+    public function render(): string
     {
         $output = "BEGIN:VCALENDAR" . "\r\n";
         $output .= 'VERSION:2.0' . "\r\n";
@@ -80,7 +72,7 @@ class Calendar implements Responsable
     /**
      * Alias for render
      */
-    public function export() : string
+    public function export(): string
     {
         return $this->render();
     }
@@ -91,7 +83,7 @@ class Calendar implements Responsable
      * @param  string  $content The actual content of an ICS file
      * @return $this
      */
-    protected function parse($content) : Calendar
+    protected function parse(string $content): Calendar
     {
         $content = str_replace("\r\n ", '', $content);
 
@@ -121,7 +113,7 @@ class Calendar implements Responsable
      * @param  string $content An existing ICS calendar. Can either be the actual content or a path/url to an ics file.
      * @return $this
      */
-    public function create($content) : Calendar
+    public function create(string $content): Calendar
     {
         $isUrl  = strpos($content, 'http') === 0 && filter_var($content, FILTER_VALIDATE_URL);
         $isFile = strpos($content, "\n") === false && file_exists($content);
@@ -145,7 +137,7 @@ class Calendar implements Responsable
         return $this->render();
     }
 
-    public function toResponse($request)
+    public function toResponse($request): Response
     {
         $response = response($this->render())
             ->header('Content-Type', 'text/calendar; charset=UTF-8');
@@ -155,5 +147,23 @@ class Calendar implements Responsable
         }
 
         return $response;
+    }
+
+    public static function get(string $calid): Calendar
+    {
+        //Try to fetch the calendar with this id from the cache
+        $calendar = Cache::get($calid);
+
+        /**
+         * If don't have a cached version of the calendar or we're in
+         * development mode we fetch the calendar from TimeEdit
+         */
+        if (!$calendar || App::environment('local')) {
+            $calendar = app(Calendar::class)->create("https://cloud.timeedit.net/itu/web/public/$calid.ics");
+            //After we fetch the calendar we put it into the cache for future requests
+            Cache::put($calid, $calendar, 5);
+        }
+
+        return $calendar;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use \App;
 use App\Calendar\Calendar;
 use Tests\TestCase;
 
@@ -14,7 +13,7 @@ class CalendarTest extends TestCase
      */
     public function aCalendarCanBeCreatedWithoutData()
     {
-        $calendar = App::make(Calendar::class);
+        $calendar = app(Calendar::class);
 
         $this->assertEquals($calendar->title, null);
         $this->assertEquals($calendar->description, null);
@@ -28,17 +27,17 @@ class CalendarTest extends TestCase
      */
     public function aCalendarCanBeCreatedWithMetadataButNoEvents()
     {
-        $rawData =  "BEGIN:VCALENDAR\n".
-                    "VERSION:2.0\n".
-                    "METHOD:PUBLISH\n".
-                    "X-WR-CALNAME:TimeEdit-SWU 1st year-20180901\n".
-                    "X-WR-CALDESC:Date limit 2018-08-20 - 2023-09-10\n".
-                    "X-PUBLISHED-TTL:PT20M\n".
-                    "CALSCALE:GREGORIAN\n".
-                    "PRODID:-//TimeEdit\\\, //TimeEdit//EN\n".
-                    "END:VCALENDAR";
+        $rawData =  "BEGIN:VCALENDAR\n" .
+            "VERSION:2.0\n" .
+            "METHOD:PUBLISH\n" .
+            "X-WR-CALNAME:TimeEdit-SWU 1st year-20180901\n" .
+            "X-WR-CALDESC:Date limit 2018-08-20 - 2023-09-10\n" .
+            "X-PUBLISHED-TTL:PT20M\n" .
+            "CALSCALE:GREGORIAN\n" .
+            "PRODID:-//TimeEdit\\\, //TimeEdit//EN\n" .
+            "END:VCALENDAR";
 
-        $calendar = App::make(Calendar::class);
+        $calendar = app(Calendar::class);
         $calendar->create($rawData);
 
         $this->assertEquals($calendar->title, 'TimeEdit-SWU 1st year-20180901');
@@ -53,17 +52,17 @@ class CalendarTest extends TestCase
      */
     public function aCalendarCanBeCreatedWithEventData()
     {
-        $rawData =  "BEGIN:VCALENDAR\n".
-                    "X-WR-CALNAME:Calendar Name\n".
-                    "X-WR-CALDESC:A calendar description\n".
-                    "BEGIN:VEVENT\n".
-                    "UID:1234\n".
-                    "SUMMARY:An amazing event\n".
-                    "DESCRIPTION:This is a descrption of an amazing event\n".
-                    "END:VEVENT".
-                    "END:VCALENDAR";
+        $rawData =  "BEGIN:VCALENDAR\n" .
+            "X-WR-CALNAME:Calendar Name\n" .
+            "X-WR-CALDESC:A calendar description\n" .
+            "BEGIN:VEVENT\n" .
+            "UID:1234\n" .
+            "SUMMARY:An amazing event\n" .
+            "DESCRIPTION:This is a descrption of an amazing event\n" .
+            "END:VEVENT" .
+            "END:VCALENDAR";
 
-        $calendar = App::make(Calendar::class);
+        $calendar = app(Calendar::class);
         $calendar->create($rawData);
 
         $this->assertEquals($calendar->title, 'Calendar Name');

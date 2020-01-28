@@ -6,64 +6,34 @@ use \Carbon\Carbon;
 
 class Event
 {
-    /**
-     * @var string
-     */
-    public $uid;
+    public string $uid = "";
 
-    /**
-     * @var string
-     */
-    public $summary;
+    public string $summary = "";
 
-    /**
-     * @var string
-     */
-    public $description;
+    public string $description = "";
 
-    /**
-     * @var Carbon\Carbon
-     */
-    public $dateStart;
+    public ?Carbon $dateStart = null;
 
-    /**
-     * @var Carbon\Carbon
-     */
-    public $dateEnd;
+    public ?Carbon $dateEnd = null;
 
-    /**
-     * @var string
-     */
-    public $location;
+    public string $location = "";
 
-    /**
-     * @var string
-     */
-    public $status;
+    public string $status = "";
 
-    /**
-     * @var string
-     */
-    public $created;
+    public string $created = "";
 
-    /**
-     * @var string
-     */
-    public $updated;
+    public string $updated = "";
 
-    /**
-     * @var string
-     */
-    public $timestamp;
+    public string $timestamp = "";
 
-    public function __construct($content = null)
+    public function __construct(?string $content = null)
     {
-        if ($content) {
+        if ($content !== null) {
             $this->parse($content);
         }
     }
 
-    public function duration() : int
+    public function duration(): int
     {
         if ($this->dateEnd) {
             return $this->dateStart->diffInSeconds($this->dateEnd);
@@ -76,14 +46,14 @@ class Event
 
         $output = "BEGIN:VEVENT\r\n";
 
-        $output .= "UID:". escape_comma($this->uid) ."\r\n";
-        $output .= "SUMMARY:". escape_comma($this->summary) ."\r\n";
-        $output .= "DESCRIPTION:". escape_comma($this->description)."\r\n";
+        $output .= "UID:" . escape_comma($this->uid) . "\r\n";
+        $output .= "SUMMARY:" . escape_comma($this->summary) . "\r\n";
+        $output .= "DESCRIPTION:" . escape_comma($this->description) . "\r\n";
         $output .= "LOCATION:" . escape_comma($this->location) . "\r\n";
 
-        $output .= "DTSTART:".$this->dateStart."\r\n";
-        $output .= "DTEND:".$this->dateEnd."\r\n";
-        $output .= "LAST-MODIFIED:".$this->updated;
+        $output .= "DTSTART:" . $this->dateStart . "\r\n";
+        $output .= "DTEND:" . $this->dateEnd . "\r\n";
+        $output .= "LAST-MODIFIED:" . $this->updated;
 
         $output .= "END:VEVENT\r\n";
 
@@ -95,7 +65,7 @@ class Event
         return $this->render();
     }
 
-    public function parse($content) : Event
+    public function parse(string $content): Event
     {
         $content = str_replace("\r\n ", '', $content);
 

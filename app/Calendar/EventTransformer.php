@@ -2,17 +2,13 @@
 
 namespace App\Calendar;
 
+use \App\Calendar\Event;
+use \App\Calendar\TimeEditParser;
+
 class EventTransformer
 {
-    /**
-     * @var \App\Calendar\Event
-     */
-    protected $event;
-
-    /**
-     * @var \App\Calendar\TimeEditParser
-     */
-    protected $info;
+    protected Event $event;
+    protected TimeEditParser $info;
 
     public function __construct(Event $event)
     {
@@ -20,7 +16,7 @@ class EventTransformer
         $this->info = new TimeEditParser($event);
     }
 
-    public function summary() : string
+    public function summary(): string
     {
         $activity = $this->info->activity();
 
@@ -35,7 +31,7 @@ class EventTransformer
         return $activity . $this->info->studyActivities();
     }
 
-    public function description() : string
+    public function description(): string
     {
         $lectors = $this->info->lectors();
         $programme = $this->info->programme();
@@ -50,17 +46,17 @@ class EventTransformer
             $description .= __('calendar.programme') . ": " . $programme . "\\n";
         }
 
-        $description .= __('calendar.timeedit_id'). ": " . $this->info->id();
+        $description .= __('calendar.timeedit_id') . ": " . $this->info->id();
 
         return $description;
     }
 
-    public function location() : string
+    public function location(): string
     {
         return $this->info->roomPrefix() . ": " . $this->info->rooms();
     }
 
-    public function transform() : Event
+    public function transform(): Event
     {
         $this->event->summary = $this->summary();
         $this->event->description = $this->description();
