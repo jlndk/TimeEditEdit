@@ -1,8 +1,10 @@
-import Lazyloader from './Lazyloader.js';
-import UrlConstructor from './UrlConstructor.js';
-import Popup from './Popup.js';
+import Lazyloader from "./Lazyloader.js";
+import UrlConstructor from "./UrlConstructor.js";
+import Popup from "./Popup.js";
 
-const input = document.querySelector("#input");
+const input: HTMLInputElement = document.querySelector(
+    "#input"
+) as HTMLInputElement;
 
 const customizeBtn = document.querySelector("#customize-btn");
 const customizeSection = document.querySelector("#customize-section");
@@ -24,19 +26,19 @@ const customize = new Popup(customizeSection);
 //Since modules are defer we dont wait for the load event to start lazy loading
 lazyLoader.load();
 
-input.addEventListener('keyup', evt => {
+input.addEventListener("keyup", evt => {
     url.id = input.value;
 });
 
-plaintextCheckbox.addEventListener('change', evt => {
+plaintextCheckbox.addEventListener("change", evt => {
     url.plaintext = evt.target.checked;
 });
 
-langSelect.addEventListener('change', evt => {
+langSelect.addEventListener("change", evt => {
     url.lang = evt.target.value;
 });
 
-copyBtn.addEventListener('click', evt => {
+copyBtn.addEventListener("click", evt => {
     /* Select the text field */
     linkDest.select();
 
@@ -44,19 +46,19 @@ copyBtn.addEventListener('click', evt => {
     document.execCommand("copy");
 });
 
-popupTrigger.addEventListener('click', evt => {
+popupTrigger.addEventListener("click", evt => {
     popup.open();
 });
 
-customizeBtn.addEventListener('click', evt => {
+customizeBtn.addEventListener("click", evt => {
     customize.toggle();
-})
+});
 
-url.addListener('update', data => {
-    if(url.id != "") {
-        linkContainer.classList.remove('hidden');
+url.addListener("update", data => {
+    if (url.id != "") {
+        linkContainer.classList.remove("hidden");
     } else {
-        linkContainer.classList.add('hidden');
+        linkContainer.classList.add("hidden");
     }
 
     linkDest.value = data.url;
