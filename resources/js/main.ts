@@ -1,22 +1,20 @@
-import Lazyloader from "./Lazyloader.js";
-import UrlConstructor from "./UrlConstructor.js";
-import Popup from "./Popup.js";
+import Lazyloader from './Lazyloader.js';
+import UrlConstructor from './UrlConstructor.js';
+import Popup from './Popup.js';
 
-const input: HTMLInputElement = document.querySelector(
-    "#input"
-) as HTMLInputElement;
+const input = document.querySelector('#input') as HTMLInputElement;
 
-const customizeBtn = document.querySelector("#customize-btn");
-const customizeSection = document.querySelector("#customize-section");
-const plaintextCheckbox = document.querySelector("#plaintext_checkbox");
-const langSelect = document.querySelector("#lang_select");
+const customizeBtn = document.querySelector('#customize-btn') as HTMLButtonElement;
+const customizeSection = document.querySelector('#customize-section') as HTMLDivElement;
+const plaintextCheckbox = document.querySelector('#plaintext_checkbox') as HTMLInputElement;
+const langSelect = document.querySelector('#lang_select') as HTMLSelectElement;
 
-const linkContainer = document.querySelector(".link-container");
-const linkDest = document.querySelector("#link-dest");
-const copyBtn = document.querySelector("#copy-btn");
+const linkContainer = document.querySelector('.link-container') as HTMLDivElement;
+const linkDest = document.querySelector('#link-dest') as HTMLInputElement;
+const copyBtn = document.querySelector('#copy-btn') as HTMLButtonElement;
 
-const popupTrigger = document.querySelector("#popup-trigger");
-const howtoPopup = document.querySelector("#howto-popup");
+const popupTrigger = document.querySelector('#popup-trigger') as HTMLButtonElement;
+const howtoPopup = document.querySelector('#howto-popup');
 
 const lazyLoader = new Lazyloader();
 const url = new UrlConstructor();
@@ -26,39 +24,40 @@ const customize = new Popup(customizeSection);
 //Since modules are defer we dont wait for the load event to start lazy loading
 lazyLoader.load();
 
-input.addEventListener("keyup", evt => {
-    url.id = input.value;
+input.addEventListener('keyup', () => {
+    url.id = input?.value;
 });
 
-plaintextCheckbox.addEventListener("change", evt => {
-    url.plaintext = evt.target.checked;
+plaintextCheckbox.addEventListener('change', () => {
+    // url.plaintext = evt.target.checked;
+    url.plaintext = plaintextCheckbox.checked;
 });
 
-langSelect.addEventListener("change", evt => {
-    url.lang = evt.target.value;
+langSelect.addEventListener('change', () => {
+    url.lang = langSelect.value;
 });
 
-copyBtn.addEventListener("click", evt => {
+copyBtn.addEventListener('click', () => {
     /* Select the text field */
     linkDest.select();
 
     /* Copy the text inside the text field */
-    document.execCommand("copy");
+    document.execCommand('copy');
 });
 
-popupTrigger.addEventListener("click", evt => {
+popupTrigger.addEventListener('click', () => {
     popup.open();
 });
 
-customizeBtn.addEventListener("click", evt => {
+customizeBtn.addEventListener('click', () => {
     customize.toggle();
 });
 
-url.addListener("update", data => {
-    if (url.id != "") {
-        linkContainer.classList.remove("hidden");
+url.addListener('update', data => {
+    if (url.id != '') {
+        linkContainer.classList.remove('hidden');
     } else {
-        linkContainer.classList.add("hidden");
+        linkContainer.classList.add('hidden');
     }
 
     linkDest.value = data.url;
