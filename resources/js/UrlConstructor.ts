@@ -1,11 +1,13 @@
-import Dispatcher from './Dispatcher.js';
+import Dispatcher from './Dispatcher';
 
 type UrlConstructorParameters = {
     lang: string | null;
     plain: boolean | null;
 };
 
-export default class UrlConstructor extends Dispatcher {
+type UrlChangedCallback = (details: { url: string }) => void;
+
+export default class UrlConstructor extends Dispatcher<UrlChangedCallback> {
     //@TODO: Get this dynamicly
     domain = 'https://timeedit.jlndk.me';
     url = '';

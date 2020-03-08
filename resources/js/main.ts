@@ -14,7 +14,7 @@ const linkDest = document.querySelector('#link-dest') as HTMLInputElement;
 const copyBtn = document.querySelector('#copy-btn') as HTMLButtonElement;
 
 const popupTrigger = document.querySelector('#popup-trigger') as HTMLButtonElement;
-const howtoPopup = document.querySelector('#howto-popup');
+const howtoPopup = document.querySelector('#howto-popup') as HTMLDivElement;
 
 const lazyLoader = new Lazyloader();
 const url = new UrlConstructor();
