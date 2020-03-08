@@ -21,11 +21,20 @@ const url = new UrlConstructor();
 const popup = new Popup(howtoPopup);
 const customize = new Popup(customizeSection);
 
+const regex = /https?:\/\/cloud.timeedit.net\/itu\/web\/public\/(.+)\.ics/;
+
 //Since modules are defer we dont wait for the load event to start lazy loading
 lazyLoader.load();
 
 input.addEventListener('keyup', () => {
-    url.id = input?.value;
+    let value = input?.value;
+    const match = regex.exec(value)?.[1];
+
+    if (match !== undefined) {
+        value = match;
+    }
+
+    url.id = value;
 });
 
 plaintextCheckbox.addEventListener('change', () => {
