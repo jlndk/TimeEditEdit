@@ -23,10 +23,10 @@ COPY . /app/
 RUN composer dump-autoload --optimize --classmap-authoritative
 
 # # Build frontend assets
-FROM node as frontend
+FROM node:12 as frontend
 WORKDIR /app
 
-COPY package.json yarn.lock webpack.mix.js /app/
+COPY package.json yarn.lock webpack.mix.js tsconfig.json /app/
 RUN yarn --pure-lockfile
 
 COPY tailwind.config.js tailwind.config.js
