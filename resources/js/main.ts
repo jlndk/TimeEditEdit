@@ -1,6 +1,6 @@
-import Lazyloader from './Lazyloader.js';
-import UrlConstructor from './UrlConstructor.js';
-import Popup from './Popup.js';
+import Lazyloader from './Lazyloader';
+import UrlConstructor from './UrlConstructor';
+import Popup from './Popup';
 
 const input = document.querySelector('#input') as HTMLInputElement;
 
@@ -53,7 +53,7 @@ customizeBtn.addEventListener('click', () => {
     customize.toggle();
 });
 
-url.addListener('update', data => {
+url.addListener('update', (data: { url: string }) => {
     if (url.id != '') {
         linkContainer.classList.remove('hidden');
     } else {

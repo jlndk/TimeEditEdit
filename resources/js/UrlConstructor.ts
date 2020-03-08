@@ -34,7 +34,7 @@ export default class UrlConstructor extends Dispatcher {
         return;
     }
 
-    set id(val) {
+    set id(val: string) {
         this._id = val;
         this.generate();
     }
@@ -43,7 +43,7 @@ export default class UrlConstructor extends Dispatcher {
         return this._id;
     }
 
-    set lang(val) {
+    set lang(val: string | null) {
         this._lang = val;
         this.generate();
     }
@@ -63,13 +63,13 @@ export default class UrlConstructor extends Dispatcher {
 
     _encodeQueryParameters(data: UrlConstructorParameters): string {
         let str = Object.keys(data)
-            .map(function(key) {
-                const value = data[key] == true ? '' : data[key];
+            .filter(key => Reflect.get(data, key) !== null)
+            .map(key => {
+                let value = Reflect.get(data, key);
+                value = value === true ? '' : value;
                 const parts = [key, value].map(encodeURIComponent);
 
-                const component = value == '' ? parts.join('') : parts.join('=');
-
-                return component;
+                return value == '' ? parts.join('') : parts.join('=');
             })
             .join('&');
 
