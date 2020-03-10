@@ -7,8 +7,8 @@ cache:
   apt: true
   directories:
     - node_modules
-    - vendor
-    - $HOME/.composer/cache
+    # - vendor
+    # - $HOME/.composer/cache
 
 before_install:
   #Disable xdebug to reduce build times drasticly
