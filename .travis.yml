@@ -15,7 +15,7 @@ before_install:
   - phpenv config-rm xdebug.ini
 
 install:
-  - composer install --dev --prefer-source --no-interaction
+  - composer install --prefer-source --no-interaction
 
 before_script:
   - cp .env.travis .env
