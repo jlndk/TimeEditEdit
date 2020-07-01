@@ -3,6 +3,7 @@
 namespace App\Calendar;
 
 use \App\Calendar\Event;
+use Illuminate\Support\Str;
 
 class TimeEditParser
 {
@@ -135,7 +136,7 @@ class TimeEditParser
         return trans_choice('calendar.lectors', @count($this->lectors));
     }
 
-    public function rooms(): string
+    public function rooms(): ?string
     {
         if (is_array($this->rooms)) {
             return natural_implode_unique($this->rooms);
@@ -147,14 +148,15 @@ class TimeEditParser
     /**
      * Alias for rooms
      */
-    public function room(): string
+    public function room(): ?string
     {
         return $this->rooms();
     }
 
-    public function roomPrefix(): string
+    public function roomPrefix(): ?string
     {
-        return trans_choice('calendar.rooms', @count($this->rooms));
+        $rooms = $this->rooms;
+        return $rooms ? trans_choice('calendar.rooms', count($rooms)) : null;
     }
 
     public function courseType(): string
@@ -282,7 +284,7 @@ class TimeEditParser
         $set = [];
 
         foreach ($studyActivities as $item) {
-            if (str_ends_with(strtolower($item), 'bsc', 'msc')) {
+            if (Str::endsWith(strtolower($item), ['bsc', 'msc'])) {
                 $item = trim(substr($item, 0, -3), " \t\n\r\0\x0B,");
             }
             $key = strtolower($item);

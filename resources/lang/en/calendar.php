@@ -9,6 +9,7 @@ return [
         'ordinary exam' => 'Exam',
         'reexam' => 'Reexam',
         'reexam - on premises' => 'Reexam',
+        'reexam - submission' => 'Reexam submission',
     ],
 
     'lectors' => 'Lector|Lectors',

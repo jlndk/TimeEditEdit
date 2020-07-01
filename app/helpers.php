@@ -25,31 +25,3 @@ if (!function_exists('natural_implode_unique')) {
         return natural_implode(array_unique($arr));
     }
 }
-
-if (!function_exists('str_starts_with')) {
-    function str_starts_with(string $haystack, string ...$needles): bool
-    {
-        foreach ($needles as $needle) {
-            $length = strlen($needle);
-            if (substr($haystack, 0, $length) === $needle) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-if (!function_exists('str_ends_with')) {
-    function str_ends_with(string $haystack, string ...$needles): bool
-    {
-        foreach ($needles as $needle) {
-            $length = strlen($needle);
-            if (substr($haystack, -$length) === $needle) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
