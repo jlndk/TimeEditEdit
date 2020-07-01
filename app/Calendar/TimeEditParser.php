@@ -3,6 +3,7 @@
 namespace App\Calendar;
 
 use \App\Calendar\Event;
+use Illuminate\Support\Str;
 
 class TimeEditParser
 {
@@ -282,7 +283,7 @@ class TimeEditParser
         $set = [];
 
         foreach ($studyActivities as $item) {
-            if (str_ends_with(strtolower($item), 'bsc', 'msc')) {
+            if (Str::endsWith(strtolower($item), ['bsc', 'msc'])) {
                 $item = trim(substr($item, 0, -3), " \t\n\r\0\x0B,");
             }
             $key = strtolower($item);
