@@ -163,8 +163,6 @@ class TimeEditParserTest extends TestCase
 
         $event = new Event($rawData);
 
-        // dd($event);
-
         $parser = new TimeEditParser($event);
 
         $expectedActivities = 'Projektarbejde og kommunikation & Grundlæggende programmering';
@@ -337,6 +335,24 @@ class TimeEditParserTest extends TestCase
         $this->assertEquals($parser->id(), '39280');
         $this->assertEquals($parser->roomPrefix(), trans_choice('calendar.rooms', 1));
         $this->assertEquals($parser->rooms(), 'Aud 1 (0A11)');
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itCanHandleNoRooms()
+    {
+        $rawData =  "BEGIN:VEVENT\n" .
+            "SUMMARY:Activity: Lecture\n" .
+            "END:VEVENT";
+
+        $event = new Event($rawData);
+
+        $parser = new TimeEditParser($event);
+
+        $this->assertEquals($parser->roomPrefix(), null);
+        $this->assertEquals($parser->rooms(), null);
     }
 
     /**

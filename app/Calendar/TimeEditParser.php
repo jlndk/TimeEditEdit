@@ -136,7 +136,7 @@ class TimeEditParser
         return trans_choice('calendar.lectors', @count($this->lectors));
     }
 
-    public function rooms(): string
+    public function rooms(): ?string
     {
         if (is_array($this->rooms)) {
             return natural_implode_unique($this->rooms);
@@ -148,14 +148,15 @@ class TimeEditParser
     /**
      * Alias for rooms
      */
-    public function room(): string
+    public function room(): ?string
     {
         return $this->rooms();
     }
 
-    public function roomPrefix(): string
+    public function roomPrefix(): ?string
     {
-        return trans_choice('calendar.rooms', @count($this->rooms));
+        $rooms = $this->rooms;
+        return $rooms ? trans_choice('calendar.rooms', count($rooms)) : null;
     }
 
     public function courseType(): string
