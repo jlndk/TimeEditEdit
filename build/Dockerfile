@@ -22,19 +22,22 @@ RUN composer install  \
 COPY . /app/
 RUN composer dump-autoload --optimize --classmap-authoritative
 
-# # Build frontend assets
+# Build frontend assets
 FROM node:12 as frontend
 WORKDIR /app
 
-COPY package.json yarn.lock webpack.mix.js tsconfig.json /app/
+COPY package.json yarn.lock /app/
 RUN yarn --pure-lockfile
 
-COPY tailwind.config.js tailwind.config.js
+COPY webpack.mix.js tsconfig.json tailwind.config.js /app/
 COPY resources /app/resources
 RUN yarn run production
 
 # Build app image
 FROM php:7.4-apache as app
+
+# Modify UID of www-data user to match default user of host
+RUN usermod --non-unique --uid 1000 www-data
 
 # RUN apt-get update && \
 #     apt-get install -y --no-install-recommends \

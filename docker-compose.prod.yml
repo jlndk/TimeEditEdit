@@ -9,7 +9,5 @@ services:
             - '80:80'
         depends_on:
             - redis
-        volumes:
-            - .:/app
     redis:
         image: redis
