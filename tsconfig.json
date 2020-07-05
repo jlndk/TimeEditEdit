@@ -3,7 +3,7 @@
         "allowJs": true,
         "esModuleInterop": true,
         "lib": ["es2019", "dom"],
-        "module": "commonjs",
+        "module": "es2020",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
         "strict": true,

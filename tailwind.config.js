@@ -1,19 +1,23 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Open Sans", ...defaultTheme.fontFamily.sans]
+                sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
             },
             maxHeight: {
-                '70%': '70%'
+                '70%': '70%',
             },
             backgroundColor: {
-                'faded': 'rgba(0,0,0,0.8)',
-            }
-        }
+                faded: 'rgba(0,0,0,0.8)',
+            },
+        },
     },
     variants: {},
-    plugins: []
+    plugins: [],
+    purge: {
+        enabled: true,
+        content: ['./resources/views/**/*.blade.php'],
+    },
 };
