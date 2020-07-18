@@ -12,17 +12,13 @@
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^2.7.0",
         "@typescript-eslint/parser": "^2.7.0",
-        "axios": "^0.19",
         "cross-env": "^5.1",
         "eslint": "^6.6.0",
         "eslint-config-prettier": "^6.5.0",
         "eslint-plugin-prettier": "^3.1.1",
         "laravel-mix": "^4.0.7",
-        "lodash": "^4.17.13",
         "prettier": "^1.19.1",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.15.2",
-        "sass-loader": "^7.1.0",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.2"
     },
