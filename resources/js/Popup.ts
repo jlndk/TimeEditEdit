@@ -1,13 +1,22 @@
-export default class Popup {
-    container: Element;
+export type PopupArgs = {
+    container: HTMLElement;
+    shouldAnimate?: boolean;
+    startOpen?: boolean;
+};
 
-    constructor(containerElem: Element) {
-        this.container = containerElem;
+export default class Popup {
+    container: HTMLElement;
+    private _isOpen = false;
+    private shouldAnimate: boolean;
+
+    constructor({ container, shouldAnimate = false, startOpen = false }: PopupArgs) {
+        this.container = container;
+        this.shouldAnimate = shouldAnimate;
 
         const closeBtn = this.container.querySelector('.btn-close') as HTMLButtonElement;
 
         this.container.addEventListener('click', evt => {
-            if (evt.target == this.container) {
+            if (evt.target === this.container) {
                 this.close();
             }
         });
@@ -17,10 +26,21 @@ export default class Popup {
                 this.close();
             });
         }
+
+        this.isOpen = startOpen;
+    }
+
+    get isOpen(): boolean {
+        return this._isOpen;
+    }
+
+    set isOpen(val: boolean) {
+        this._isOpen = val;
+        this.applyClasses();
     }
 
     open(): Popup {
-        this.container.classList.remove('hidden');
+        this.isOpen = true;
         return this;
     }
 
@@ -29,7 +49,7 @@ export default class Popup {
     }
 
     close(): Popup {
-        this.container.classList.add('hidden');
+        this.isOpen = false;
         return this;
     }
 
@@ -38,7 +58,19 @@ export default class Popup {
     }
 
     toggle(): Popup {
-        this.container.classList.toggle('hidden');
+        this.isOpen = !this.isOpen;
         return this;
+    }
+
+    private applyClasses(): void {
+        const closeClasses = this.shouldAnimate ? ['opacity-0', 'pointer-events-none'] : ['hidden'];
+        const openClasses = this.shouldAnimate ? ['opacity-100'] : [];
+        if (this.isOpen) {
+            this.container.classList.remove(...closeClasses);
+            this.container.classList.add(...openClasses);
+        } else {
+            this.container.classList.remove(...openClasses);
+            this.container.classList.add(...closeClasses);
+        }
     }
 }

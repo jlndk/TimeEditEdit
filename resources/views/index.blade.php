@@ -17,7 +17,7 @@
 
 <body class="font-sans bg-itu h-full flex flex-col items-center justify-center px-3">
 
-    <aside id="howto-popup" class="fixed bg-faded top-0 left-0 right-0 bottom-0 px-3 z-50 flex flex-col justify-center items-center hidden">
+    <aside id="howto-popup" class="fixed bg-faded top-0 left-0 right-0 bottom-0 px-3 z-50 flex flex-col justify-center items-center transition-opacity duration-100 opacity-0 pointer-events-none">
         <article class="bg-white relative w-full max-w-xl max-h-70% overflow-y-hidden rounded-lg shadow-lg">
             <button class="btn-close absolute top-0 right-0 text-3xl font-bold mr-5 mt-1 leading-none">&times;</button>
             <div class="overflow-y-auto max-h-full px-6 py-4">
@@ -77,7 +77,7 @@
             How do i use this site?
         </a>
 
-        <section id="customize-section" class="flex flex-col hidden mb-4">
+        <section id="customize-section" class="flex flex-col mb-4 hidden">
             <h2 class="font-bold">Customization:</h2>
 
             <label for="plaintext_checkbox" class="checkbox-container">

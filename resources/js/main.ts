@@ -2,6 +2,7 @@ import Lazyloader from './Lazyloader';
 import UrlConstructor from './UrlConstructor';
 import Popup from './Popup';
 
+// Reference DOM elements (using casts since we know they all exist)
 const input = document.querySelector('#input') as HTMLInputElement;
 
 const customizeBtn = document.querySelector('#customize-btn') as HTMLButtonElement;
@@ -16,36 +17,27 @@ const copyBtn = document.querySelector('#copy-btn') as HTMLButtonElement;
 const popupTrigger = document.querySelector('#popup-trigger') as HTMLButtonElement;
 const howtoPopup = document.querySelector('#howto-popup') as HTMLDivElement;
 
+// Construct "Logic" classes
 const lazyLoader = new Lazyloader();
 const url = new UrlConstructor();
-const popup = new Popup(howtoPopup);
-const customize = new Popup(customizeSection);
-
-const regex = /https?:\/\/cloud.timeedit.net\/itu\/web\/public\/(.+)\.ics/;
+const popup = new Popup({ container: howtoPopup, shouldAnimate: true });
+const customize = new Popup({ container: customizeSection });
 
 //Since modules are defer we dont wait for the load event to start lazy loading
 lazyLoader.load();
 
 input.addEventListener('keyup', () => {
-    let value = input?.value;
-    const match = regex.exec(value)?.[1];
-
-    if (match !== undefined) {
-        value = match;
-    }
-
-    url.id = value;
+    const regex = /https?:\/\/cloud.timeedit.net\/itu\/web\/public\/(.+)\.ics/;
+    const value = input?.value;
+    // Atempt to extract id from full timeedit url, or simply use the input as id otherwise
+    url.id = regex.exec(value)?.[1] ?? value;
 });
 
-plaintextCheckbox.addEventListener('change', () => {
-    // url.plaintext = evt.target.checked;
-    url.plaintext = plaintextCheckbox.checked;
-});
+// Set settings in URL generator when UI change
+plaintextCheckbox.addEventListener('change', () => (url.plaintext = plaintextCheckbox.checked));
+langSelect.addEventListener('change', () => (url.lang = langSelect.value));
 
-langSelect.addEventListener('change', () => {
-    url.lang = langSelect.value;
-});
-
+// Copy content of result input when the "Copy" button is clicked
 copyBtn.addEventListener('click', () => {
     /* Select the text field */
     linkDest.select();
@@ -54,19 +46,15 @@ copyBtn.addEventListener('click', () => {
     document.execCommand('copy');
 });
 
-popupTrigger.addEventListener('click', () => {
-    popup.open();
-});
-
-customizeBtn.addEventListener('click', () => {
-    customize.toggle();
-});
-
+// Trigger popups
+popupTrigger.addEventListener('click', () => popup.open());
+customizeBtn.addEventListener('click', () => customize.toggle());
 url.addListener('update', (data: { url: string }) => {
-    if (url.id != '') {
-        linkContainer.classList.remove('hidden');
-    } else {
+    // Show or hide the result input based on the given id
+    if (url.id == '') {
         linkContainer.classList.add('hidden');
+    } else {
+        linkContainer.classList.remove('hidden');
     }
 
     linkDest.value = data.url;

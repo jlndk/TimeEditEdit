@@ -18,6 +18,9 @@ module.exports = {
     plugins: [],
     purge: {
         enabled: true,
-        content: ['./resources/views/**/*.blade.php'],
+        content: ['./resources/views/**/*.blade.php', './resources/js/**/*.ts'],
+    },
+    future: {
+        removeDeprecatedGapUtilities: true,
     },
 };
