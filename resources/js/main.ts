@@ -26,11 +26,21 @@ const customize = new Popup({ container: customizeSection });
 //Since modules are defer we dont wait for the load event to start lazy loading
 lazyLoader.load();
 
-input.addEventListener('keyup', () => {
+input.addEventListener('keyup', evt => {
+    if (evt.key === 'Enter') {
+        linkDest.focus();
+
+        return;
+    }
+
     const regex = /https?:\/\/cloud.timeedit.net\/itu\/web\/public\/(.+)\.ics/;
     const value = input?.value;
+    const id = regex.exec(value)?.[1];
     // Atempt to extract id from full timeedit url, or simply use the input as id otherwise
-    url.id = regex.exec(value)?.[1] ?? value;
+    url.id = id ?? value;
+    if (id !== undefined) {
+        input.value = id;
+    }
 });
 
 // Set settings in URL generator when UI change
@@ -45,6 +55,9 @@ copyBtn.addEventListener('click', () => {
     /* Copy the text inside the text field */
     document.execCommand('copy');
 });
+
+// Select all text in the result input when it is clicked
+linkDest.addEventListener('click', () => linkDest.select());
 
 // Trigger popups
 popupTrigger.addEventListener('click', () => popup.open());

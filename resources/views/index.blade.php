@@ -11,7 +11,7 @@
     <!-- Lazyload assets in browsers that has javascript, and revert back to normal loading when they dont -->
     <!-- Link: https://dassur.ma/things/lazyloading/ -->
     <noscript class="lazyload">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
     </noscript>
 </head>
 
@@ -21,48 +21,33 @@
         <article class="bg-white relative w-full max-w-xl max-h-70% overflow-y-hidden rounded-lg shadow-lg">
             <button class="btn-close absolute top-0 right-0 text-3xl font-bold mr-5 mt-1 leading-none">&times;</button>
             <div class="overflow-y-auto max-h-full px-6 py-4">
-                <h2 class="font-bold text-lg">How do I use this site?</h2>
-                <p>To use this service you need to obtain the id of a valid schedule on TimeEdit.</p>
-                <p>This can easily be done though the TimeEdit website, once you have configured/have access to your schedule.</p>
+                <h2 class="font-bold text-lg">How do you use this site?</h2>
+                <p>To use this service you need to obtain the subscription link of a valid schedule on TimeEdit.</p>
+                <p>This can be done though the TimeEdit website, once you have access to your schedule.</p>
                 <p>On the page for your chosen schedule you need to obtain the subscribtion link by pressing the <img src="/img/instructions-subscribe.png" alt="Subscribtion Button"> button and make a copy of the link that is now shown.</p>
-                <p>The link should be in the following format: https://cloud.timeedit.net/itu/web/public/<b>abc123abc123</b>.ics</p>
-                <p>The id that should be provided to this service is the text between <i>public/</i> and <i>.ics</i> (<b>abc123abc123</b> in the example above)</p>
-                <p>Now that the TimeEdit id is obtained, you simply need to paste the link in the textbox on this site. You will now immedially be presented with a new link that can be pasted directly into your calendar program of choise.</p>
+                <p>This link must simply be pasted information the textbox on this site. You will now immedially be presented with a new link that can be pasted directly into your calendar program of choise.</p>
 
                 <b>Enjoy your new shiny schedule!</b>
                 <br><br>
 
 
                 <h2 class="font-bold text-lg">How does it work?</h2>
-                <p>TimeEditEdit acts as a proxy (middleman) between your calendar program (such as Google calendar and outlook) and TimeEdit.</p>
+                <p>TimeEditEdit acts as a proxy (middleman) between your calendar program (such as Google Calendar or outlook) and TimeEdit.</p>
                 <p>This means that when your calendar program tries to fetch new updates to the schedule, it asks our service instead of TimeEdit directly.</p>
-                <p>Our service then downloads the schedule from TimeEdit, performs the transformations and proper formatting and then sends it to your calendar program.</p>
+                <p>When this happens, the schedule is downloaded from TimeEdit, transformations and proper formatting are performed and afterwards sent to your calendar program.</p>
 
                 <p>In more technical terms the TimeEdit schedule is distribued as an ICS file (which is the de-facto standard file type for distributing and sharing calendar events).</p>
-                <p>By parsing this file we can extract the important information, perform sensible modifications (such as translations) and afterwards generate a new ICS file that is send to your calendar program.</p>
+                <p>By parsing this file we can extract the important information, perform sensible modifications (such as translations) and afterwards generate a new ICS file that is sent to your calendar program.</p>
             </div>
         </article>
     </aside>
 
     <main class="flex flex-col bg-white text-center shadow-lg rounded-lg px-4 py-4 mb-4 max-w-lg">
 
-        <h1 class="text-center text-4xl font-light leading-tight my-4">TimeEditEdit</h1>
+        <h1 class="text-center text-4xl font-light leading-tight my-2">TimeEditEdit</h1>
 
-        <div class="link-container hidden mb-2">
-            <label class="font-bold" for="input">Here is your new improved link:</label>
-            <div class="flex bg-gray-200 rounded-lg">
-                <input id="link-dest" type="text" class="bg-transparent px-3 py-3 w-full text-center placeholder-gray-700 text-gray-800" readonly>
-                <button id="copy-btn" class="flex flex-col items-center justify-center px-1 border-l border-gray-400" style="width: 70px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 text-gray-900 fill-current">
-                        <path d="M6 6V2c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4zm2 0h4a2 2 0 0 1 2 2v4h4V2H8v4zM2 8v10h10V8H2z" /></svg>
-                    <span class="block text-xs text-gray-700">Copy</span>
-                </button>
-            </div>
-        </div>
-
-        <label for="input" class="mb-2">Enter TimeEdit Id Here:</label>
         <div class="flex bg-gray-200 rounded-lg mb-4">
-            <input class="bg-transparent w-full px-3 py-3 placeholder-gray-700 text-gray-800" type="text" id="input" placeholder="Enter TimeEdit id here" aria-label="Enter TimeEdit id here">
+            <input class="bg-transparent w-full px-3 py-3 placeholder-gray-700 text-gray-800" type="text" id="input" placeholder="Paste TimeEdit Link or Id Here" aria-label="Paste time edit link or id here">
             <button id="customize-btn" class="flex flex-col items-center justify-center px-1 border-l border-gray-400" style="width: 70px;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 text-gray-900 fill-current">
                     <path d="M6.47 9.8A5 5 0 0 1 .2 3.22l3.95 3.95 2.82-2.83L3.03.41a5 5 0 0 1 6.4 6.68l10 10-2.83 2.83L6.47 9.8z" /></svg>
@@ -76,6 +61,18 @@
             </div>
             How do i use this site?
         </a>
+        
+        <div class="link-container hidden py-4 mb-2 -mx-4 px-4 bg-gray-400">
+            <label class="font-bold text-gray-800" for="input">Here is your new improved link:</label>
+            <div class="flex bg-gray-200 border border-gray-400 rounded-lg">
+                <input id="link-dest" type="text" class="bg-transparent px-3 py-3 w-full text-center placeholder-gray-700 text-gray-800" readonly>
+                <button id="copy-btn" class="flex flex-col items-center justify-center px-1 border-l border-gray-400" style="width: 70px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-6 text-gray-900 fill-current">
+                        <path d="M6 6V2c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4zm2 0h4a2 2 0 0 1 2 2v4h4V2H8v4zM2 8v10h10V8H2z" /></svg>
+                    <span class="block text-xs text-gray-700">Copy</span>
+                </button>
+            </div>
+        </div>
 
         <section id="customize-section" class="flex flex-col mb-4 hidden">
             <h2 class="font-bold">Customization:</h2>

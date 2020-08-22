@@ -17,7 +17,7 @@ module.exports = {
     variants: {},
     plugins: [],
     purge: {
-        enabled: true,
+        enabled: false,
         content: ['./resources/views/**/*.blade.php', './resources/js/**/*.ts'],
     },
     future: {
